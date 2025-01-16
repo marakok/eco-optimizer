@@ -1,0 +1,22 @@
+$fonts-map: (
+  primary-bold: "PlusJakartaSans-Bold",
+  primary-extra-light: "PlusJakartaSans-ExtraLight",
+  primary-light: "PlusJakartaSans-Light",
+  primary-medium: "PlusJakartaSans-Medium",
+  primary-regular: "PlusJakartaSans-Regular",
+  primary-semi-bold: "PlusJakartaSans-SemiBold",
+);
+
+:root {
+  @each $key, $value in $fonts-map {
+    --mvpb-font-#{$key}: #{$value};
+  }
+}
+
+@each $key, $value in $fonts-map {
+  @font-face {
+    font-family: #{$value};
+    src: url("/fonts/#{$value}.woff2") format("woff2");
+    font-style: normal;
+  }
+}

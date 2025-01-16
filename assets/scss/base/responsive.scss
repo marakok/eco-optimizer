@@ -1,0 +1,60 @@
+@use "@/base/breakpoints.scss" as *;
+
+:root {
+  --mvpb--gutter-small: 1rem;
+  --mvpb--gutter-medium: 2rem;
+  --mvpb--gutter-large: 4rem;
+  --mvpb--content-max-width: 1400px;
+}
+
+.container,
+.container--left,
+.container--right {
+  width: 100%;
+  padding-left: var(--mvpb--gutter-small);
+  padding-right: var(--mvpb--gutter-small);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: var(--mvpb--content-max-width);
+}
+
+@media (min-width: breakpoint(tablet)) {
+  .container {
+    padding-left: var(--mvpb--gutter-medium);
+    padding-right: var(--mvpb--gutter-medium);
+  }
+
+  .container--left,
+  .container--right {
+    max-width: 75%;
+  }
+
+  .container--left {
+    margin-left: var(--mvpb--gutter-medium);
+    margin-right: auto;
+  }
+
+  .container--right {
+    margin-right: var(--mvpb--gutter-medium);
+    margin-left: auto;
+  }
+}
+
+@media (min-width: breakpoint(desktop)) {
+  .container {
+    padding-left: var(--mvpb--gutter-large);
+    padding-right: var(--mvpb--gutter-large);
+  }
+
+  .container--left {
+    margin-left: var(--mvpb--gutter-large);
+  }
+
+  .container--right {
+    margin-right: var(--mvpb--gutter-large);
+  }
+}

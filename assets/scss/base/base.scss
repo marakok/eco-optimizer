@@ -1,0 +1,38 @@
+:root {
+  --mvpb-nav-height: 100px;
+  --theme-background-color: var(--mvpb-color-light, #ffffff);
+  --page-screen-background: var(--mvpb-color-primary, #ffffff);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  font-weight: normal;
+  outline: none;
+}
+
+#__nuxt {
+  position: relative;
+}
+
+#__nuxt,
+body,
+html {
+  min-height: 100dvh;
+  margin: 0;
+}
+
+body {
+  transition: background-color 0.3s ease;
+  background-color: var(--mvpb-color-bright-white);
+  font-family: var(--mvpb-font-tertiary-regular);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none;
+}
+
+.container {
+  position: relative;
+}

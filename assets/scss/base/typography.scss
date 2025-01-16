@@ -1,0 +1,271 @@
+@use "sass:map";
+@use "sass:math";
+@use "@/base/breakpoints.scss" as *;
+
+$typography-map: (
+  h1: (
+    min: 40px,
+    preferred: 5.5,
+    max: 72px,
+  ),
+  h2: (
+    min: 38px,
+    preferred: 5,
+    max: 68px,
+  ),
+  h3: (
+    min: 36px,
+    preferred: 4.5,
+    max: 64px,
+  ),
+  h4: (
+    min: 34px,
+    preferred: 4,
+    max: 60px,
+  ),
+  h5: (
+    min: 32px,
+    preferred: 3.5,
+    max: 56px,
+  ),
+  h6: (
+    min: 30px,
+    preferred: 3,
+    max: 52px,
+  ),
+  p: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  a: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  input: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  button: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  textarea: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  label: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  li: (
+    min: 22px,
+    preferred: 1.225,
+    max: 28px,
+  ),
+  small: (
+    min: 16px,
+    preferred: 1,
+    max: 20px,
+  ),
+  1: (
+    min: 10px,
+    preferred: 0.75,
+    max: 16px,
+  ),
+  2: (
+    min: 12px,
+    preferred: 0.875,
+    max: 18px,
+  ),
+  3: (
+    min: 14px,
+    preferred: 1,
+    max: 20px,
+  ),
+  4: (
+    min: 16px,
+    preferred: 1.125,
+    max: 24px,
+  ),
+  5: (
+    min: 18px,
+    preferred: 1.25,
+    max: 28px,
+  ),
+  6: (
+    min: 20px,
+    preferred: 1.5,
+    max: 32px,
+  ),
+  7: (
+    min: 22px,
+    preferred: 1.75,
+    max: 36px,
+  ),
+  8: (
+    min: 24px,
+    preferred: 2,
+    max: 40px,
+  ),
+  9: (
+    min: 26px,
+    preferred: 2.25,
+    max: 44px,
+  ),
+  10: (
+    min: 28px,
+    preferred: 2.5,
+    max: 48px,
+  ),
+  11: (
+    min: 30px,
+    preferred: 3,
+    max: 52px,
+  ),
+  12: (
+    min: 32px,
+    preferred: 3.5,
+    max: 56px,
+  ),
+  13: (
+    min: 34px,
+    preferred: 4,
+    max: 60px,
+  ),
+  14: (
+    min: 36px,
+    preferred: 4.5,
+    max: 64px,
+  ),
+  15: (
+    min: 38px,
+    preferred: 5,
+    max: 68px,
+  ),
+  16: (
+    min: 40px,
+    preferred: 5.5,
+    max: 72px,
+  ),
+);
+
+// Define size ratios for different screen sizes
+$size-ratios: (
+  mobile: 1,
+  mobileMedium: 1.05,
+  mobileWide: 1.1,
+  tablet: 1.2,
+  desktop: 1.3,
+  desktopMedium: 1.4,
+  desktopWide: 1.5,
+);
+
+// Define line height ratios
+$line-height-ratios: (
+  h1: 1.1,
+  h2: 1.1,
+  h3: 1.1,
+  h4: 1.2,
+  h5: 1.2,
+  h6: 1.1,
+  p: 1.4,
+  li: 1.5,
+  label: 1.4,
+  input: 1.4,
+  button: 1.4,
+  textarea: 1.4,
+  a: 1.4,
+  small: 1.5,
+);
+
+// Function to strip units
+@function strip-unit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// Function to calculate fluid typography sizes
+@function calculate-size($min, $preferred, $max, $ratio) {
+  $min-value: strip-unit($min);
+  $max-value: strip-unit($max);
+  $preferred-vmin: #{$preferred * $ratio}vmin;
+  @return clamp(#{$min}, #{$preferred-vmin}, #{$max});
+}
+
+// Root styles with CSS custom properties
+:root {
+  @each $key, $sizes in $typography-map {
+    --mvpb-font-size-#{$key}: #{calculate-size(
+        map.get($sizes, min),
+        map.get($sizes, preferred),
+        map.get($sizes, max),
+        map.get($size-ratios, mobile)
+      )};
+    @if map.has-key($line-height-ratios, $key) {
+      --mvpb-line-height-#{$key}: #{map.get($line-height-ratios, $key)};
+    }
+  }
+}
+
+// Media queries to update custom properties
+@each $breakpoint, $ratio in $size-ratios {
+  @if $breakpoint != mobile {
+    @media (min-width: breakpoint($breakpoint)) {
+      :root {
+        @each $key, $sizes in $typography-map {
+          --mvpb-font-size-#{$key}: #{calculate-size(
+              map.get($sizes, min),
+              map.get($sizes, preferred),
+              map.get($sizes, max),
+              $ratio
+            )};
+        }
+      }
+    }
+  }
+}
+
+// Apply styles to elements
+@each $element
+  in (h1, h2, h3, h4, h5, h6, p, a, input, textarea, label, button, li, small)
+{
+  #{$element} {
+    font-size: var(--mvpb-font-size-#{$element});
+    line-height: var(--mvpb-line-height-#{$element});
+    margin-bottom: 1rem;
+  }
+}
+
+@each $element in (h1, h2, h3, h4, h5, h6) {
+  #{$element} {
+    font-family: var(--mvpb-font-primary-regular);
+  }
+}
+
+// Generate utility classes
+@each $key, $sizes in $typography-map {
+  .font-size-#{$key} {
+    font-size: var(--mvpb-font-size-#{$key});
+  }
+}
+
+strong,
+b {
+  font-weight: 700; // or 'bold'
+}
+
+a {
+  transition: color 0.2s;
+  color: var(--dq-color-light);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--mvpb-color-primary);
+    text-decoration: underline;
+  }
+}
