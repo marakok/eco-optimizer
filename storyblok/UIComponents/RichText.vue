@@ -216,7 +216,6 @@ onMounted(() => {
   position: relative;
   z-index: 1;
   border-radius: var(--mvpb-spacing-base-2);
-  overflow: hidden;
 
   &.full-width {
     width: 100%;

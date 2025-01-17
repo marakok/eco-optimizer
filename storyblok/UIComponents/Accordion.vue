@@ -99,10 +99,9 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-base-5)
-    var(--mvpb-spacing-base-4) var(--mvpb-spacing-base-5);
+  padding: var(--mvpb-spacing-base-4) 0 var(--mvpb-spacing-base-4) 0;
   margin: 0;
-  font-size: var(--mvpb-font-size-8);
+  font-size: var(--mvpb-font-size-6);
 }
 
 .accordion--label-text {

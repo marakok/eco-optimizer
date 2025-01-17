@@ -40,11 +40,11 @@ const navItems = computed(() => props.navigationData);
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-6) 0
     var(--mvpb-spacing-6);
   z-index: 9;
+  gap: var(--mvpb-spacing-6);
 }
 
 .header--menu {
@@ -60,7 +60,6 @@ const navItems = computed(() => props.navigationData);
 
 .header--menu-list-item {
   margin: 0;
-  font-family: var(--mvpb-font-tertiary-regular);
   list-style: none;
 }
 
@@ -68,6 +67,11 @@ const navItems = computed(() => props.navigationData);
   transition: color 0.3s;
   text-transform: capitalize;
   text-decoration: none;
+  font-size: var(--mvpb-font-size-3);
+  font-family: var(--mvpb-font-primary-semi-bold);
+  padding: 0;
+  margin: 0;
+  display: flex;
 }
 
 .header--menu-list-item-link:hover {

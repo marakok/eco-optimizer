@@ -8,7 +8,7 @@
 
   <div v-else class="mobile-header">
     <NuxtLink aria-label="logo" to="/" class="mobile-logo">
-      <LogoComponent size="extra-small" />
+      <LogoComponent />
     </NuxtLink>
 
     <button

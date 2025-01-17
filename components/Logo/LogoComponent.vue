@@ -1,16 +1,13 @@
 <template>
   <div class="logo">
-    <p class="logo--text">Ecooptimizer Logo</p>
+    <LogoIcon />
   </div>
 </template>
 
-<style scoped lang="scss">
-.logo {
-  font-family: var(--mvpb-font-tertiary-regular);
-}
+<script setup></script>
 
-.logo--text {
-  font-size: var(--mvpb-font-size-9);
-  margin: 0;
+<style scoped>
+.logo {
+  display: flex;
 }
 </style>

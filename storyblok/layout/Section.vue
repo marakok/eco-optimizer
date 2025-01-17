@@ -74,12 +74,26 @@ const sectionClasses = computed(() => ({
 
 const sectionHeightClass = computed(() => {
   switch (props.blok.height) {
+    case "100":
+      return "section--height-100";
+    case "90":
+      return "section--height-90";
+    case "80":
+      return "section--height-80";
     case "75":
       return "section--height-75";
+    case "66":
+      return "section--height-66";
     case "50":
       return "section--height-50";
+    case "33":
+      return "section--height-33";
     case "25":
       return "section--height-25";
+    case "20":
+      return "section--height-20";
+    case "10":
+      return "section--height-10";
     case "auto":
       return "section--height-auto";
     default:
@@ -98,12 +112,26 @@ const borderStyles = computed(() => ({
 
 const getSectionHeight = () => {
   switch (props.blok.height) {
+    case "100":
+      return "100vh";
+    case "90":
+      return "90vh";
+    case "80":
+      return "80vh";
     case "75":
       return "75vh";
+    case "66":
+      return "66vh";
     case "50":
       return "50vh";
+    case "33":
+      return "33vh";
     case "25":
       return "25vh";
+    case "20":
+      return "20vh";
+    case "10":
+      return "10vh";
     case "auto":
       return "auto";
     default:

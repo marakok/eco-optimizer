@@ -1,8 +1,8 @@
 <template>
   <Transition @enter="onEnter" @leave="onLeave">
     <div v-if="isVisible" class="page-screen" ref="pageScreenElement">
-      <div class="heart-container" ref="heartContainer">
-        <HeartIcon class="heart-icon" ref="heartIcon" />
+      <div class="heart-container">
+        <LogoIconSmall class="logo-icon" ref="logoIcon" />
       </div>
     </div>
   </Transition>
@@ -12,8 +12,7 @@
 const { $gsap: gsap } = useNuxtApp();
 
 const pageScreenElement = ref(null);
-const heartContainer = ref(null);
-const heartIcon = ref(null);
+const logoIcon = ref(null);
 const { isLoading } = usePageLoading();
 const isVisible = ref(false);
 
@@ -22,17 +21,17 @@ const onEnter = (el, done) => {
     onComplete: done,
   });
 
-  tl.set(heartIcon.value.$el, {
+  tl.set(logoIcon.value.$el, {
     scale: 0.1,
     opacity: 1,
     color: "var(--mvpb-color-primary)",
   });
 
-  tl.to(heartIcon.value.$el, {
+  tl.to(logoIcon.value.$el, {
     scale: 3.5,
     duration: 1.2,
     ease: "power2.inOut",
-  }).to(heartIcon.value.$el, {
+  }).to(logoIcon.value.$el, {
     scale: 0.1,
     duration: 1.2,
     ease: "power2.inOut",
@@ -40,7 +39,7 @@ const onEnter = (el, done) => {
 };
 
 const onLeave = (el, done) => {
-  if (!heartIcon.value) {
+  if (!logoIcon.value) {
     done();
     return;
   }
@@ -54,7 +53,7 @@ const onLeave = (el, done) => {
     },
   });
 
-  tl.to(heartIcon.value.$el, {
+  tl.to(logoIcon.value.$el, {
     opacity: 0,
     duration: 0.8,
     ease: "power2.in",
@@ -98,7 +97,7 @@ onMounted(() => {
   justify-content: center;
 }
 
-.heart-icon {
+.logo-icon {
   width: 100%;
   height: 100%;
 }

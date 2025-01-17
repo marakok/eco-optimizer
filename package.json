@@ -14,6 +14,8 @@
     "startCommand": "npm run stackblitz"
   },
   "dependencies": {
+    "@iconify/json": "^2.2.296",
+    "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.18.7",
     "@nuxtjs/robots": "^5.1.1",
     "@types/nodemailer": "^6.4.16",
@@ -30,7 +32,6 @@
     "vue3-lottie": "^3.3.0"
   },
   "devDependencies": {
-    "@iconify-json/uil": "^1.2.3",
     "@nuxtjs/device": "^3.1.1",
     "@nuxtjs/style-resources": "^1.2.2",
     "@storyblok/nuxt": "^6.0.4",

@@ -1,5 +1,6 @@
 :root {
   --mvpb-nav-height: 100px;
+  --mvpb-border-radius: 0.8rem;
   --theme-background-color: var(--mvpb-color-light, #ffffff);
   --page-screen-background: var(--mvpb-color-primary, #ffffff);
 }
@@ -26,7 +27,7 @@ html {
 body {
   transition: background-color 0.3s ease;
   background-color: var(--mvpb-color-bright-white);
-  font-family: var(--mvpb-font-tertiary-regular);
+  font-family: var(--mvpb-font-primary-regular);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

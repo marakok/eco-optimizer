@@ -10,8 +10,8 @@ $typography-map: (
   ),
   h2: (
     min: 38px,
-    preferred: 5,
-    max: 68px,
+    preferred: 4.5,
+    max: 64px,
   ),
   h3: (
     min: 36px,
@@ -34,7 +34,7 @@ $typography-map: (
     max: 52px,
   ),
   p: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
@@ -243,7 +243,7 @@ $line-height-ratios: (
 
 @each $element in (h1, h2, h3, h4, h5, h6) {
   #{$element} {
-    font-family: var(--mvpb-font-primary-regular);
+    font-family: var(--mvpb-font-primary-semi-bold);
   }
 }
 
@@ -254,18 +254,13 @@ $line-height-ratios: (
   }
 }
 
-strong,
-b {
-  font-weight: 700; // or 'bold'
-}
-
 a {
+  color: inherit;
   transition: color 0.2s;
-  color: var(--dq-color-light);
   text-decoration: none;
 
   &:hover {
-    color: var(--mvpb-color-primary);
+    color: var(--mvpb-color-tertiary-dark);
     text-decoration: underline;
   }
 }
