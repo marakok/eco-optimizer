@@ -1,5 +1,5 @@
 <template>
-  <div v-editable="blok" class="image">
+  <div v-editable="blok" class="image" :class="{ 'flex-grow': blok.flexGrow }">
     <div class="image--container">
       <picture class="image--picture">
         <source media="(min-width: 1280px)" :srcset="blok.desktop?.filename" />
@@ -10,7 +10,7 @@
         <img
           class="image--asset"
           loading="lazy"
-          :class="imageClasses"
+          :style="{ 'object-fit': blok.objectFit || 'cover' }"
           :src="blok.mobile?.filename || blok.desktop?.filename"
           :title="blok.headline"
           :alt="blok.headline"
@@ -22,14 +22,7 @@
 </template>
 
 <script setup>
-const props = defineProps({ blok: Object });
-
-const imageClasses = computed(() => ({
-  "image-contain": props.blok.contain,
-  "image-large": props.blok.large,
-  "position-top": props.blok.imageTop,
-  "position-bottom": props.blok.imageBottom,
-}));
+defineProps({ blok: Object });
 </script>
 
 <style scoped lang="scss">
@@ -37,30 +30,17 @@ const imageClasses = computed(() => ({
   --image-size: 45vh;
   position: relative;
   color: var(--theme-color);
+  display: flex;
+
+  &.flex-grow {
+    flex-grow: 1;
+  }
 
   &--asset {
     height: 100%;
     width: 100%;
-    object-fit: cover;
-    object-position: center;
     overflow: hidden;
     border-radius: var(--mvpb-spacing-base-3);
-
-    &.image-contain {
-      object-fit: contain;
-    }
-
-    &.image-large {
-      --image-size: 70vh;
-    }
-
-    &.position-top {
-      object-position: top;
-    }
-
-    &.position-bottom {
-      object-position: bottom;
-    }
   }
 }
 

@@ -79,7 +79,7 @@ onMounted(() => {
 }
 
 .accordion--content {
-  padding: 0 var(--mvpb-spacing-2) var(--mvpb-spacing-2) var(--mvpb-spacing-2);
+  padding: 0 0 var(--mvpb-spacing-base-3) var(--mvpb-spacing-base-3);
 }
 
 .accordion--content-inner {
@@ -99,9 +99,10 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--mvpb-spacing-base-4) 0 var(--mvpb-spacing-base-4) 0;
+  padding: var(--mvpb-spacing-base-3) 0 var(--mvpb-spacing-base-3)
+    var(--mvpb-spacing-base-1);
   margin: 0;
-  font-size: var(--mvpb-font-size-6);
+  font-size: var(--mvpb-font-size-5);
 }
 
 .accordion--label-text {

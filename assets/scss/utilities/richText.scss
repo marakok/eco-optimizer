@@ -66,6 +66,7 @@
     font-size: calc(
       var(--mvpb-font-size-li) * var(--richtext-font-size-multiplier, 1)
     );
+    margin-bottom: 0;
   }
   :deep(a) {
     font-size: calc(

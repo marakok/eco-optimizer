@@ -26,7 +26,7 @@ export const getContactEmailTemplate = (submission) => {
             padding: 20px;
           }
           .header {
-            background: #fff15a;
+            background: #4fc900;
             color: #404040;
             padding: 20px;
             border-radius: 8px;
@@ -66,12 +66,12 @@ export const getContactEmailTemplate = (submission) => {
       </head>
       <body>
         <div class="header">
-          <h1 style="margin: 0;">New Contact Form Submission</h1>
+          <h1 style="margin: 0;">Nieuw contactformulier ingediend</h1>
         </div>
         <div class="content">
           <div class="field">
             <div class="label">Name:</div>
-            <div class="value">${submission.name || "Not provided"}</div>
+            <div class="value">${submission.name || "Niet opgegeven"}</div>
           </div>
           
           <div class="field">
@@ -109,7 +109,7 @@ export const getContactEmailTemplate = (submission) => {
           </div>
         </div>
         <div class="footer">
-          <p>This is an automated message from Strengths Consultancy Contact Form</p>
+          <p>This is an automated message from Ecooptimizer contact form</p>
         </div>
       </body>
     </html>
@@ -123,7 +123,7 @@ export const getAutoReplyTemplate = (submission) => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Thank You for Contacting Strengths Consultancy</title>
+        <title>Dank u voor uw contact met Ecooptimizer.</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -134,7 +134,7 @@ export const getAutoReplyTemplate = (submission) => {
             padding: 20px;
           }
           .header {
-            background: #fff15a;
+            background: #4fc900;
             color: #404040;
             padding: 20px;
             border-radius: 8px;
@@ -157,16 +157,15 @@ export const getAutoReplyTemplate = (submission) => {
       </head>
       <body>
         <div class="header">
-          <h1 style="margin: 0;">Thank You for Contacting Us</h1>
+          <h1 style="margin: 0;">Dank u voor uw contact met ons</h1>
         </div>
         <div class="content">
-          <p>Dear ${submission.name || "Valued Client"},</p>
+          <p>Dear ${submission.name || "Gewaardeerde klant"},</p>
           
-          <p>Thank you for reaching out to Strengths Consultancy. We have received your message and will get back to you shortly.</p>
+          <p>Dank u voor uw bericht aan Ecooptimizer. We hebben uw bericht ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
+          <p>We reageren doorgaans binnen 1-2 werkdagen.</p>
           
-          <p>Our team typically responds within 1-2 business days.</p>
-          
-          <p>Best regards,<br>The Strengths Consultancy Team</p>
+          <p>Met vriendelijke groet,<br>Ecooptimizer</p>
         </div>
       </body>
     </html>

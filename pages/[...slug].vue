@@ -20,10 +20,8 @@ const story = await useAsyncStoryblok(
 
 onMounted(() => {
   nextTick(() => {
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-      setLoading(false);
-    }, 50);
+    window.scrollTo(0, 0);
+    setLoading(false);
   });
 });
 </script>

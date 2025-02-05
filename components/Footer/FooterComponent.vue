@@ -5,16 +5,11 @@
         <NuxtLink aria-label="Logo" to="/">
           <LogoComponent size="small" class="footer--logo" />
         </NuxtLink>
-
-        <p class="mvp-blueprint">
-          Designed and developed by
-          <a
-            href="https://www.mvpblueprint.co"
-            class="mvp-blueprint-nest"
-            target="_blank"
+        <p>
+          <small
+            >Optimaliseer uw impact met data. Plan een gesprek en ontdek hoe
+            data-gedreven inzichten uw duurzame groei kunnen versnellen.</small
           >
-            <span>M</span><span>V</span><span>P</span>&nbsp;Blueprint
-          </a>
         </p>
       </div>
       <div class="footer--contact-wrapper">
@@ -34,17 +29,12 @@
         </div>
       </div>
     </div>
-
-    <div class="footer--foot-note container-wide">
-      <small class="footer--foot-note-copy"> Something </small>
-      <small class="footer--foot-note-copy"> And the other </small>
-    </div>
   </footer>
 </template>
 
 <script setup>
 const nuxtApp = useNuxtApp();
-const stories = ref({}); // navigation not used yet
+const stories = ref({});
 
 onMounted(() => {
   stories.value = nuxtApp.$stories;
@@ -86,14 +76,6 @@ onMounted(() => {
   margin-bottom: var(--mvpb-spacing-base-8);
 }
 
-.footer--foot-note {
-  padding-top: var(--mvpb-spacing-base-6);
-  padding-bottom: var(--mvpb-spacing-base-6);
-  display: flex;
-  justify-content: space-between;
-}
-
-.footer--foot-note-copy,
 .footer--address {
   font-size: var(--mvpb-font-size-3);
   font-family: var(--mvpb-font-tertiary-regular);
@@ -112,37 +94,12 @@ onMounted(() => {
   }
 
   .footer--logo-wrapper {
+    width: 50%;
     flex: 0 0 auto;
   }
 
   .footer--contact-wrapper {
     flex: 0 0 auto;
-  }
-}
-
-.mvp-blueprint {
-  width: 50%;
-}
-
-.mvp-blueprint-nest {
-  display: flex;
-  span {
-    font-weight: bold;
-    &:first-child {
-      color: #8e54e9;
-    }
-
-    &:nth-child(2) {
-      color: #44bdc5;
-    }
-
-    &:nth-child(3) {
-      color: #ff026f;
-    }
-  }
-
-  &:hover {
-    color: #ff026f;
   }
 }
 </style>

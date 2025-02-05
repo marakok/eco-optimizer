@@ -7,7 +7,7 @@
         class="column--background-image"
       />
     </div>
-    <div class="column--content">
+    <div class="column--content" :style="contentStyles">
       <StoryblokComponent
         v-for="item in blok.content"
         :key="item._uid"
@@ -31,9 +31,16 @@ const hasBackgroundImage = computed(() => {
 
 const columnClasses = computed(() => ({
   column: true,
-  "column-middle": props.blok.verticalAlign === "middle",
-  "column-bottom": props.blok.verticalAlign === "bottom",
   "has-background-image": hasBackgroundImage.value,
+}));
+
+const contentStyles = computed(() => ({
+  "--column-content-align":
+    props.blok.verticalAlign === "middle"
+      ? "center"
+      : props.blok.verticalAlign === "bottom"
+      ? "flex-end"
+      : "flex-start",
 }));
 
 const columnStyles = computed(() => ({
@@ -90,15 +97,6 @@ const columnStyles = computed(() => ({
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-@media (min-width: breakpoint(tablet)) {
-  .column-middle {
-    justify-content: center;
-  }
-
-  .column-bottom {
-    justify-content: flex-end;
-  }
+  justify-content: var(--column-content-align, flex-start);
 }
 </style>

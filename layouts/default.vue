@@ -1,10 +1,7 @@
 <template>
   <ScrollProgressComponent />
 
-  <PrimaryNavComponent
-    :navigationData="navigationData"
-    v-if="$viewport.isGreaterThan('tablet')"
-  />
+  <PrimaryNavComponent v-if="$viewport.isGreaterThan('tablet')" />
 
   <div v-else class="mobile-header">
     <NuxtLink aria-label="logo" to="/" class="mobile-logo">
@@ -20,7 +17,7 @@
     </button>
   </div>
 
-  <MobileNavComponent :navigationData="navigationData" ref="mobileNavRef" />
+  <MobileNavComponent ref="mobileNavRef" />
 
   <Transition name="page" mode="out-in">
     <div :key="$route.fullPath">
@@ -35,10 +32,9 @@
 
 <script setup>
 const router = useRouter();
-const nuxtApp = useNuxtApp();
 const runtimeConfig = useRuntimeConfig();
 const mobileNavRef = ref(null);
-const navigationData = ref({});
+const headerMenu = ref([]);
 
 const isDevelopment = runtimeConfig.public.ENV === "development";
 
@@ -57,9 +53,21 @@ const toggleMobileNav = () => {
   }
 };
 
-onMounted(() => {
-  navigationData.value = nuxtApp.$appConfig.header;
+const { data: configData } = await useAsyncData("config", async () => {
+  const storyblokApi = useStoryblokApi();
+  const { data } = await storyblokApi.get("cdn/stories/config", {
+    resolve_links: "url",
+    version:
+      runtimeConfig.public.ENV === "development" ||
+      runtimeConfig.public.ENV === "staging"
+        ? "draft"
+        : "published",
+  });
+
+  return data.story.content;
 });
+
+headerMenu.value = configData.value.header_menu;
 </script>
 
 <style scoped lang="scss">

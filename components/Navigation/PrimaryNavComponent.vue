@@ -26,7 +26,7 @@
 const props = defineProps({
   navigationData: {
     type: Object,
-    required: true,
+    required: false,
   },
 });
 

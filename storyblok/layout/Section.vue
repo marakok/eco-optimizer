@@ -104,6 +104,7 @@ const sectionHeightClass = computed(() => {
 const sectionBorderClass = computed(() => ({
   edgeless: props.blok.edgeless,
   "has-border": props.blok.hasBorder,
+  "border-radius": props.blok.borderRadius,
 }));
 
 const borderStyles = computed(() => ({
@@ -182,7 +183,7 @@ onMounted(() => {
     inView(
       sectionRef.value,
       () => {
-        // DO AN ANIMATION
+        // Your existing animation logic
       },
       { amount: 0.5 }
     );
@@ -226,15 +227,6 @@ onMounted(() => {
 }
 
 .section--background {
-  &:not(&.edgeless) {
-    top: var(--section-padding-y);
-    right: var(--section-padding-x);
-    bottom: var(--section-padding-y);
-    left: var(--section-padding-x);
-  }
-}
-
-.section--background {
   position: absolute;
   background-color: var(--theme-background-color);
 
@@ -253,6 +245,17 @@ onMounted(() => {
     right: var(--mvpb-spacing-3);
     bottom: 0;
     left: var(--mvpb-spacing-3);
+  }
+
+  &.border-radius {
+    border-radius: var(--mvpb-border-radius);
+  }
+
+  &:not(&.edgeless) {
+    top: var(--section-padding-y);
+    right: var(--section-padding-x);
+    bottom: var(--section-padding-y);
+    left: var(--section-padding-x);
   }
 }
 

@@ -17,14 +17,6 @@
         :errorMessage="fieldErrorMessages[field.id]"
       />
 
-      <TextareaComponent
-        :blok="messageField"
-        v-model="form.message"
-        :isValid="isFieldValid.message"
-        :isSubmitted="isSubmitted"
-        :errorMessage="fieldErrorMessages.message"
-      />
-
       <ButtonComponent
         type="submit"
         class="submit-button"
@@ -32,7 +24,7 @@
         :class="{ 'button-disabled': !isFormValid }"
         :disabled="isLoading || !isFormValid"
       >
-        {{ isLoading ? "Submitting..." : "Submit" }}
+        {{ isLoading ? "Bezig met verzenden..." : "Registreren" }}
       </ButtonComponent>
     </form>
 
@@ -49,52 +41,43 @@
 </template>
 
 <script setup>
+import { useReCaptcha } from "vue-recaptcha-v3";
+
 const props = defineProps({ blok: Object });
 const isDoc = ref(props.blok.responseMessage?.type === "doc");
+const recaptchaInstance = useReCaptcha();
 
 const inputFields = [
   {
     id: "name",
-    title: "Name *",
+    title: "Naam *",
     type: "text",
-    placeholder: "What's your name",
+    placeholder: "Uw naam?",
     required: true,
   },
   {
     id: "email",
-    title: "Email *",
+    title: "E-mail *",
     type: "email",
-    placeholder: "What's your email?",
+    placeholder: "Uw e-mailadres?",
     required: true,
   },
 ];
 
-const messageField = {
-  id: "message",
-  title: "Message *",
-  placeholder: "How can we help?",
-  required: true,
-};
-
 const form = reactive({
   name: "",
   email: "",
-  message: "",
 });
 
 const isFieldValid = reactive({
   name: true,
   email: true,
-  message: true,
 });
 
 const fieldErrorMessages = reactive({
-  name: "Name is required.",
-  email: "Please enter a valid email address.",
-  message: "Please enter a message.",
+  name: "Voer een naam in.",
+  email: "Voer een geldig e-mailadres in.",
 });
-
-const { executeRecaptcha } = useGoogleRecaptcha();
 
 const isSubmitted = ref(false);
 const isLoading = ref(false);
@@ -102,9 +85,7 @@ const isLoading = ref(false);
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const isFormValid = computed(() => {
-  const requiredFields = [...inputFields, messageField].filter(
-    (field) => field.required
-  );
+  const requiredFields = [...inputFields].filter((field) => field.required);
   const allRequiredFieldsFilled = requiredFields.every(
     (field) => form[field.id].trim() !== ""
   );
@@ -118,7 +99,7 @@ const isFormValid = computed(() => {
 
 const validateForm = () => {
   let isValid = true;
-  [...inputFields, messageField].forEach((field) => {
+  [...inputFields].forEach((field) => {
     if (field.required && !form[field.id].trim()) {
       isFieldValid[field.id] = false;
       isValid = false;
@@ -145,9 +126,15 @@ const buttonVariant = computed(() => props.blok.buttonType || "primary");
 const submitForm = async () => {
   if (validateForm()) {
     isLoading.value = true;
-    const { token } = await executeRecaptcha("submit");
-
     try {
+      await recaptchaInstance?.recaptchaLoaded();
+
+      const token = await recaptchaInstance?.executeRecaptcha("submit");
+
+      if (!token) {
+        throw new Error("Failed to get reCAPTCHA token");
+      }
+
       const response = await fetch("/api/submit", {
         method: "POST",
         headers: {
@@ -161,15 +148,27 @@ const submitForm = async () => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
 
       isSubmitted.value = true;
+    } catch (error) {
+      console.error("Form submission error:", error);
+      // Here you might want to show an error message to the user
     } finally {
       isLoading.value = false;
     }
   }
 };
+
+onMounted(async () => {
+  try {
+    await recaptchaInstance?.recaptchaLoaded();
+  } catch (error) {
+    console.error("Failed to load reCAPTCHA:", error);
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -181,6 +180,7 @@ const submitForm = async () => {
 
 .submit-button {
   margin-top: var(--dq-spacing-3);
+  margin-bottom: 0;
 }
 
 .thank-you-message {

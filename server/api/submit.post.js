@@ -4,62 +4,92 @@ import {
   getAutoReplyTemplate,
 } from "../utils/emailTemplates";
 
-const environment = process.env.ENV;
-
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
   },
 });
 
+async function verifyRecaptcha(token, secretKey) {
+  if (!token) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "reCAPTCHA token is required",
+    });
+  }
+
+  try {
+    const response = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `secret=${secretKey}&response=${token}`,
+      }
+    );
+
+    if (!response.ok) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Failed to verify reCAPTCHA with Google",
+      });
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "reCAPTCHA verification failed",
+        data: {
+          errors: data["error-codes"] || ["unknown error"],
+        },
+      });
+    }
+
+    // Check the score for v3
+    if (typeof data.score === "number" && data.score < 0.5) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "reCAPTCHA score too low",
+        data: {
+          score: data.score,
+        },
+      });
+    }
+
+    return true;
+  } catch (error) {
+    if (error.statusCode) {
+      throw error; // Re-throw our custom errors
+    }
+    throw createError({
+      statusCode: 500,
+      statusMessage: "reCAPTCHA verification failed",
+      data: error,
+    });
+  }
+}
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  // Handle development environment
-  if (environment === "development") {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "LOCAL DEVELOPMENT: Form submitted successfully",
-        data: {},
-      }),
-    };
-  }
-
-  // Verify reCAPTCHA
+  // Verify reCAPTCHA first
   const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-  if (body.recaptchaToken) {
-    try {
-      const googleResponse = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${body.recaptchaToken}`,
-        {
-          method: "POST",
-        }
-      );
-
-      const reCaptchaVerificationResponse = await googleResponse.json();
-
-      if (reCaptchaVerificationResponse.score < 0.5) {
-        throw createError({
-          statusCode: 400,
-          statusMessage: "reCaptcha verification failed",
-          data: {
-            error: "reCaptcha verification failed",
-          },
-        });
-      }
-    } catch (error) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "reCaptcha verification not provided",
-      });
-    }
+  if (!recaptchaSecretKey) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "reCAPTCHA secret key not configured",
+    });
   }
+
+  await verifyRecaptcha(body.recaptchaToken, recaptchaSecretKey);
 
   // Validate required fields
   if (!body.email) {
@@ -74,7 +104,6 @@ export default defineEventHandler(async (event) => {
     const submissionData = {
       name: body.name || "",
       email: body.email,
-      message: body.message || "",
       pageUri: body.pageUri || "",
     };
 
@@ -92,9 +121,9 @@ export default defineEventHandler(async (event) => {
 
       // Auto-reply to submitter
       const autoReplyOptions = {
-        from: process.env.SMTP_USER,
+        from: '"Ecooptimizer" <no_reply@eco-optimizer.com>',
         to: submissionData.email,
-        subject: "Thank You for Contacting Strengths Consultancy",
+        subject: "Dank u voor uw contact met Ecooptimizer.",
         html: getAutoReplyTemplate(submissionData),
       };
 
