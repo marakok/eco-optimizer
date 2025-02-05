@@ -47,13 +47,18 @@ defineEmits(["update:modelValue"]);
 
 .textarea-component {
   padding: var(--mvpb-spacing-base-4);
-  border: none;
+  border: 2px solid var(--mvpb-color-grey-40);
   color: var(--form-text-color);
   background: var(--form-input-bg-color);
   width: 100%;
   min-height: 100px;
   resize: vertical;
   border-radius: var(--mvpb-spacing-base-1);
+
+  &:focus,
+  &:hover {
+    border-color: var(--mvpb-color-tertiary);
+  }
 
   &::placeholder {
     color: var(--form-placeholder-color);

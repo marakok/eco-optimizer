@@ -39,27 +39,27 @@ $typography-map: (
     max: 28px,
   ),
   a: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
   input: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
   button: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
   textarea: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
   label: (
-    min: 22px,
+    min: 18px,
     preferred: 1.225,
     max: 28px,
   ),
@@ -69,9 +69,9 @@ $typography-map: (
     max: 28px,
   ),
   small: (
-    min: 16px,
+    min: 14px,
     preferred: 1,
-    max: 20px,
+    max: 16px,
   ),
   1: (
     min: 10px,
@@ -181,7 +181,7 @@ $line-height-ratios: (
   button: 1.4,
   textarea: 1.4,
   a: 1.4,
-  small: 1.5,
+  small: 1.4,
 );
 
 // Function to strip units

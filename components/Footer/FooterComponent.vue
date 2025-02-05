@@ -3,30 +3,34 @@
     <div class="footer--content container-wide">
       <div class="footer--logo-wrapper">
         <NuxtLink aria-label="Logo" to="/">
-          <LogoComponent size="small" class="footer--logo" />
+          <LogoComponent class="footer--logo" />
         </NuxtLink>
-        <p>
+        <p class="footer--text">
           <small
             >Optimaliseer uw impact met data. Plan een gesprek en ontdek hoe
             data-gedreven inzichten uw duurzame groei kunnen versnellen.</small
           >
         </p>
       </div>
-      <div class="footer--contact-wrapper">
-        <address class="footer--address">
-          <p><small>The A'Dam Toren</small></p>
-          <p><small>Overhoeksplein 1</small></p>
-          <p><small>1031 KS Amsterdam </small></p>
-          <p><small>Floor 13</small></p>
-        </address>
-
-        <div class="footer--contact">
-          <small>
-            <a href="mailto:will@adamgooddate.coach">
-              will@adamgooddate.coach
-            </a>
-          </small>
-        </div>
+      <div class="footer--nav-wrapper">
+        <p class="footer--nav-title">
+          <strong>Contact</strong>
+        </p>
+        <small class="footer--text">
+          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
+            ><PhoneIcon />(406) 555-0120</a
+          ></small
+        >
+        <small class="footer--text">
+          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
+            ><MailIcon />mark@ecooptimizer.com</a
+          ></small
+        >
+        <small class="footer--text">
+          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
+            ><LocationIcon />Eindhoven de gekste</a
+          ></small
+        >
       </div>
     </div>
   </footer>
@@ -45,16 +49,31 @@ onMounted(() => {
 @use "@/base/breakpoints.scss" as *;
 
 .footer {
-  background-color: var(--mvpb-color-dark);
-  color: var(--mvpb-color-light);
+  background-color: var(--mvpb-color-grey-60);
   padding: 0 var(--mvpb-spacing-base-4);
 }
 
 .footer--content {
-  padding-top: var(--mvpb-spacing-base-12);
+  padding: var(--mvpb-spacing-base-12) 0;
   display: flex;
   flex-direction: column;
   gap: var(--mvpb-spacing-base-4);
+}
+
+.footer--nav-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer--text {
+  color: var(--mvpb-color-grey-10);
+}
+
+.footer--link {
+  display: flex;
+  align-items: center;
+  gap: var(--mvpb-spacing-base-2);
+  margin-bottom: 0;
 }
 
 .footer--address {
@@ -74,12 +93,11 @@ onMounted(() => {
 .footer--logo {
   display: block;
   margin-bottom: var(--mvpb-spacing-base-8);
+  color: var(--mvpb-color-dark);
 }
 
-.footer--address {
-  font-size: var(--mvpb-font-size-3);
-  font-family: var(--mvpb-font-tertiary-regular);
-  text-transform: uppercase;
+.footer--nav-title {
+  margin-bottom: var(--mvpb-spacing-base-8);
 }
 
 @media (min-width: breakpoint(tablet)) {

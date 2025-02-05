@@ -17,6 +17,14 @@
         :errorMessage="fieldErrorMessages[field.id]"
       />
 
+      <TextareaComponent
+        :blok="messageField"
+        v-model="form.message"
+        :isValid="isFieldValid.message"
+        :isSubmitted="isSubmitted"
+        :errorMessage="fieldErrorMessages.message"
+      />
+
       <ButtonComponent
         type="submit"
         class="submit-button"
@@ -64,19 +72,29 @@ const inputFields = [
   },
 ];
 
+const messageField = {
+  id: "message",
+  title: "Message",
+  placeholder: "Would you like to leave a message?",
+  required: true,
+};
+
 const form = reactive({
   name: "",
   email: "",
+  message: "",
 });
 
 const isFieldValid = reactive({
   name: true,
   email: true,
+  message: true,
 });
 
 const fieldErrorMessages = reactive({
-  name: "Voer een naam in.",
-  email: "Voer een geldig e-mailadres in.",
+  name: "Please enter a name.",
+  email: "Please enter a valid email address.",
+  message: "Let me know how you are.",
 });
 
 const isSubmitted = ref(false);
@@ -85,7 +103,9 @@ const isLoading = ref(false);
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const isFormValid = computed(() => {
-  const requiredFields = [...inputFields].filter((field) => field.required);
+  const requiredFields = [...inputFields, messageField].filter(
+    (field) => field.required
+  );
   const allRequiredFieldsFilled = requiredFields.every(
     (field) => form[field.id].trim() !== ""
   );
@@ -99,7 +119,7 @@ const isFormValid = computed(() => {
 
 const validateForm = () => {
   let isValid = true;
-  [...inputFields].forEach((field) => {
+  [...inputFields, messageField].forEach((field) => {
     if (field.required && !form[field.id].trim()) {
       isFieldValid[field.id] = false;
       isValid = false;

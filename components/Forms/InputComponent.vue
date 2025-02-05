@@ -47,11 +47,16 @@ defineEmits(["update:modelValue"]);
   text-indent: var(--mvpb-spacing-base-4);
   padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-base-4)
     var(--mvpb-spacing-base-4) 0;
-  border: none;
+  border: 2px solid var(--mvpb-color-grey-40);
   color: var(--form-text-color);
   background: var(--form-input-bg-color);
   width: 100%;
   border-radius: var(--mvpb-spacing-base-1);
+
+  &:focus,
+  &:hover {
+    border-color: var(--mvpb-color-tertiary);
+  }
 
   &::placeholder {
     color: var(--form-placeholder-color);

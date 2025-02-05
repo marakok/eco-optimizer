@@ -103,14 +103,25 @@ const handleMouseLeave = () => {
 }
 
 .button.tertiary {
+  background: none;
+  border: 2px solid var(--mvpb-color-dark);
+  border-radius: 25px;
   font-family: var(--mvpb-font-primary-semi-bold);
-  background-color: var(--mvpb-color-tertiary);
+  // background-color: var(--mvpb-color-tertiary);
   color: var(--mvpb-color-dark);
+}
+
+.button.tertiary.disabled {
+  border-color: var(--mvpb-color-grey-40);
+  background-color: var(--mvpb-color-grey-40);
+  color: white;
 }
 
 .button.tertiary:hover:not(.disabled),
 .button.tertiary:focus:not(.disabled) {
-  background-color: var(--mvpb-color-tertiary-dark);
+  color: var(--mvpb-color-light);
+  background-color: var(--mvpb-color-dark);
+  border: 2px solid var(--mvpb-color-dark);
 }
 
 .button.quaternary {
