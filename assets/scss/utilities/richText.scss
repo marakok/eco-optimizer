@@ -1,4 +1,6 @@
 .mvpb-rich-text {
+  color: var(--default-font-color);
+
   :deep(h1) {
     font-size: calc(
       var(--mvpb-font-size-h1) * var(--richtext-font-size-multiplier, 1)
