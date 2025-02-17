@@ -17,19 +17,15 @@
           <strong>Contact</strong>
         </p>
         <small class="footer--text">
-          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
-            ><PhoneIcon />(406) 555-0120</a
+          <p class="footer--link"><PhoneIcon />(406) 555-0120</p></small
+        >
+        <small class="footer--text">
+          <a href="mailto:info@ecooptimizer.com" class="footer--link"
+            ><MailIcon />info@ecooptimizer.com</a
           ></small
         >
         <small class="footer--text">
-          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
-            ><MailIcon />mark@ecooptimizer.com</a
-          ></small
-        >
-        <small class="footer--text">
-          <a href="mailto:mark@ecooptimizer.com" class="footer--link"
-            ><LocationIcon />Eindhoven de gekste</a
-          ></small
+          <p class="footer--link"><LocationIcon />Eindhoven de gekste</p></small
         >
       </div>
     </div>
