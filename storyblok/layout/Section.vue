@@ -24,7 +24,7 @@
       </div>
     </ClientOnly>
 
-    <div class="section--inner" :class="contentPositionClass">
+    <div class="section--inner container" :class="contentPositionClass">
       <div class="section--content">
         <StoryblokComponent
           v-for="nestedBlok in blok.body"

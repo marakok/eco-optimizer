@@ -17,15 +17,15 @@
           <strong>Contact</strong>
         </p>
         <small class="footer--text">
-          <p class="footer--link"><PhoneIcon />(406) 555-0120</p></small
+          <p class="footer--link"><PhoneIcon />+31 6 20994203</p></small
         >
         <small class="footer--text">
-          <a href="mailto:info@ecooptimizer.com" class="footer--link"
-            ><MailIcon />info@ecooptimizer.com</a
+          <a href="mailto:info@ecooptimizer.co" class="footer--link"
+            ><MailIcon />info@ecooptimizer.co</a
           ></small
         >
         <small class="footer--text">
-          <p class="footer--link"><LocationIcon />Eindhoven de gekste</p></small
+          <p class="footer--link"><LocationIcon />Eindhoven</p></small
         >
       </div>
     </div>

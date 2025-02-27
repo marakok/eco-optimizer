@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header container">
     <NuxtLink to="/" class="header--logo">
       <LogoComponent />
     </NuxtLink>
@@ -41,8 +41,8 @@ const navItems = computed(() => props.navigationData);
   right: 0;
   display: flex;
   align-items: center;
-  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-6) 0
-    var(--mvpb-spacing-6);
+  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-base-8) 0
+    var(--mvpb-spacing-base-8);
   z-index: 9;
   gap: var(--mvpb-spacing-6);
 }
