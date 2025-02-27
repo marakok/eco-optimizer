@@ -41,10 +41,11 @@ const navItems = computed(() => props.navigationData);
   right: 0;
   display: flex;
   align-items: center;
-  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-base-8) 0
-    var(--mvpb-spacing-base-8);
+  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-8)
+    var(--mvpb-spacing-base-5) var(--mvpb-spacing-8);
   z-index: 9;
   gap: var(--mvpb-spacing-6);
+  background-color: var(--mvpb-color-light);
 }
 
 .header--menu {

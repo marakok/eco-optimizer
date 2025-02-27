@@ -1,0 +1,28 @@
+<template>
+  <div v-editable="blok" class="tile" :style="tileStyles">
+    <StoryblokComponent
+      v-for="nestedBlok in blok.richText"
+      :key="nestedBlok._uid"
+      :blok="nestedBlok"
+    />
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  blok: {
+    type: Object,
+    required: true,
+  },
+});
+
+const tileStyles = computed(() => ({
+  "--theme-background-color": props.blok.backgroundColor || "transparent",
+}));
+</script>
+
+<style scoped>
+.tile {
+  background-color: var(--theme-background-color);
+}
+</style>
