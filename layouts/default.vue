@@ -105,9 +105,10 @@ headerMenu.value = configData.value.header_menu;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--mvpb-spacing-base-3) var(--mvpb-spacing-8) 0
-    var(--mvpb-spacing-8);
+  padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-8)
+    var(--mvpb-spacing-base-4) var(--mvpb-spacing-8);
   z-index: 10;
+  background-color: var(--mvpb-color-light);
 }
 
 .page-enter-active {

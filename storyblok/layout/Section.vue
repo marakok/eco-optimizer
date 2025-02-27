@@ -26,6 +26,9 @@
 
     <div class="section--inner container" :class="contentPositionClass">
       <div class="section--content">
+        <p v-if="blok.sectionTitle" class="section--title">
+          {{ blok.sectionTitle }}
+        </p>
         <StoryblokComponent
           v-for="nestedBlok in blok.body"
           :key="nestedBlok._uid"
@@ -214,6 +217,13 @@ onMounted(() => {
     padding-left: var(--mvpb-spacing-base-4);
     padding-right: var(--mvpb-spacing-base-4);
   }
+}
+
+.section--title {
+  text-transform: uppercase;
+  font-family: var(--mvpb-font-primary-semi-bold);
+  color: var(--theme-font-color);
+  margin: var(--mvpb-spacing-6) 0 0 0;
 }
 
 @media (min-width: breakpoint(tablet)) {
