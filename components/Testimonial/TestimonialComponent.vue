@@ -1,15 +1,42 @@
 <template>
-  <div class="testimonial" :style="testimonialStyles" ref="testimonialRef">
+  <div
+    class="testimonial"
+    :class="layoutClass"
+    :style="testimonialStyles"
+    ref="testimonialRef"
+  >
     <div class="testimonial--inner">
-      <div class="testimonial--quote-icon">
-        <OpenQuoteIcon
-          :color="blok.quoteIconColor || 'var(--mvpb-color-quaternary)'"
-        />
+      <div v-if="isOdd" class="testimonial--author-container">
+        <div
+          v-if="blok.authorImage?.filename"
+          class="testimonial--author-image"
+        >
+          <img
+            :src="blok.authorImage.filename"
+            :alt="blok.authorName || 'Testimonial author'"
+            loading="lazy"
+          />
+        </div>
+        <div class="testimonial--author-info">
+          <p class="testimonial--author-name">{{ blok.authorName }}</p>
+          <p class="testimonial--author-title">{{ blok.authorTitle }}</p>
+        </div>
       </div>
-      <div class="testimonial--content">
-        <p class="testimonial--text" v-html="renderedContent"></p>
+
+      <div class="testimonial--content-wrapper">
+        <div class="testimonial--quote-icon">
+          <OpenQuoteIcon
+            :color="blok.quoteIconColor || 'var(--mvpb-color-quaternary)'"
+          />
+        </div>
+        <ClientOnly>
+          <div class="testimonial--content">
+            <p class="testimonial--text" v-html="renderedContent"></p>
+          </div>
+        </ClientOnly>
       </div>
-      <div class="testimonial--author-container">
+
+      <div v-if="!isOdd" class="testimonial--author-container">
         <div
           v-if="blok.authorImage?.filename"
           class="testimonial--author-image"
@@ -37,9 +64,19 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  index: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const testimonialRef = ref(null);
+const isOdd = computed(() => props.index % 2 === 0); // Using 0-based indexing, so even index = odd card
+
+const layoutClass = computed(() => ({
+  "testimonial--odd": isOdd.value,
+  "testimonial--even": !isOdd.value,
+}));
 
 const testimonialStyles = computed(() => ({
   "--testimonial-background-color": props.blok.backgroundColor || "#1A1B23",
@@ -65,8 +102,6 @@ const renderedContent = computed(() => {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  border-radius: var(--mvpb-border-radius, 0.8rem);
-  background-color: var(--testimonial-background-color);
   color: var(--testimonial-text-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
@@ -80,8 +115,15 @@ const renderedContent = computed(() => {
 .testimonial--inner {
   display: flex;
   flex-direction: column;
-  padding: var(--mvpb-spacing-6);
   height: 100%;
+  justify-content: space-between;
+}
+
+.testimonial--content-wrapper {
+  padding: var(--mvpb-spacing-3);
+  border-radius: var(--mvpb-border-radius, 0.8rem);
+  background-color: var(--testimonial-background-color);
+  flex: 1;
 }
 
 .testimonial--quote-icon {
@@ -90,7 +132,6 @@ const renderedContent = computed(() => {
 }
 
 .testimonial--content {
-  flex: 1;
   margin-bottom: var(--mvpb-spacing-6);
 }
 
@@ -99,6 +140,7 @@ const renderedContent = computed(() => {
   line-height: 1.6;
   font-weight: normal;
   margin: 0;
+  text-align: left; /* Ensure text is left aligned */
 }
 
 .testimonial--author-container {
@@ -138,11 +180,15 @@ const renderedContent = computed(() => {
   margin: 0;
 }
 
-@media (min-width: breakpoint(tablet)) {
-  .testimonial--inner {
-    padding: var(--mvpb-spacing-8);
-  }
+.testimonial--odd .testimonial--author-container {
+  margin-bottom: var(--mvpb-spacing-2);
+}
 
+.testimonial--even .testimonial--author-container {
+  margin-top: var(--mvpb-spacing-2);
+}
+
+@media (min-width: breakpoint(tablet)) {
   .testimonial--text {
     font-size: var(--mvpb-font-size-6);
   }
