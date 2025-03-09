@@ -1,8 +1,8 @@
 <template>
-  <div v-editable="blok">
+  <div v-editable="blok" class="testimonial-slider-wrapper">
     <TestimonialSliderComponent
-      :testimonials="blok.testimonials"
-      :backgroundColor="blok.backgroundColor"
+      :testimonials="blok?.testimonials || []"
+      :backgroundColor="blok.backgroundColor || '#000'"
       :autoplay="blok.autoplay ? parseInt(blok.autoplaySpeed) : 0"
       :showNavigation="blok.showNavigation !== false"
       :showPagination="blok.showPagination !== false"
@@ -19,3 +19,9 @@ defineProps({
   },
 });
 </script>
+
+<style scoped>
+.testimonial-slider-wrapper {
+  width: 100%;
+}
+</style>

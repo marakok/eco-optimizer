@@ -13,12 +13,11 @@
         :key="index"
         class="testimonial-slide"
       >
-        <TestimonialComponent :blok="testimonial" />
+        <TestimonialComponent :blok="testimonial" :index="index" />
       </Slide>
 
       <template #addons>
         <Navigation v-if="showNavigation" />
-        <Pagination v-if="showPagination" />
       </template>
     </Carousel>
   </div>
@@ -28,7 +27,7 @@
 const props = defineProps({
   testimonials: {
     type: Array,
-    required: true,
+    default: () => [],
   },
   backgroundColor: {
     type: String,
@@ -39,10 +38,6 @@ const props = defineProps({
     default: 5000, // 5 seconds
   },
   showNavigation: {
-    type: Boolean,
-    default: true,
-  },
-  showPagination: {
     type: Boolean,
     default: false,
   },
@@ -78,7 +73,7 @@ const breakpoints = ref({
 });
 
 const sliderStyles = computed(() => ({
-  "--slider-background-color": props.backgroundColor,
+  "--slider-background-color": props.backgroundColor || "#000", // Default to black background like in your screenshot
 }));
 </script>
 
@@ -89,7 +84,7 @@ const sliderStyles = computed(() => ({
   position: relative;
   width: 100%;
   background-color: var(--slider-background-color, transparent);
-  padding: var(--mvpb-spacing-3) 0;
+  padding: var(--mvpb-spacing-6) 0;
 }
 
 .testimonial-slide {
@@ -98,7 +93,7 @@ const sliderStyles = computed(() => ({
   display: flex;
 
   @media (min-width: breakpoint(tablet)) {
-    padding: 0 var(--mvpb-spacing-3);
+    padding: 0 var(--mvpb-spacing-1);
   }
 }
 
@@ -106,12 +101,9 @@ const sliderStyles = computed(() => ({
   overflow: visible;
 }
 
-:deep(.carousel__track) {
-  gap: var(--mvpb-spacing-base-4);
-}
-
 :deep(.carousel__slide) {
   transition: all 0.3s ease;
+  text-align: left;
 
   &:hover {
     z-index: 10;
@@ -122,33 +114,34 @@ const sliderStyles = computed(() => ({
 :deep(.carousel__next) {
   height: 50px;
   width: 50px;
-  top: 0;
-  right: 0;
-  left: auto;
-  transform: translateY(-120%);
-  color: var(--mvpb-color-dark);
-  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--mvpb-color-light);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
+
+  top: 50%;
+  transform: translateY(-50%);
 
   &:hover {
     color: var(--mvpb-color-primary);
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.3);
   }
 
   @media (min-width: breakpoint(tablet)) {
     top: 50%;
-    transform: translateY(-50%);
   }
 }
 
 :deep(.carousel__prev) {
+  left: -25px;
+
   @media (min-width: breakpoint(tablet)) {
     left: -25px;
-    right: auto;
   }
 }
 
 :deep(.carousel__next) {
+  right: -25px;
+
   @media (min-width: breakpoint(tablet)) {
     right: -25px;
   }
