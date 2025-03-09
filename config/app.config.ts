@@ -37,3 +37,5 @@ const config: AppConfig = {
     ],
   },
 };
+
+export default config;

@@ -82,7 +82,6 @@ const gridClasses = computed(() => ({
   display: flex;
   flex-direction: column;
   gap: var(--mvpb-spacing-2);
-  flex-wrap: wrap;
 }
 
 .grid-sixty-fourty-reverse {
@@ -108,7 +107,7 @@ const gridClasses = computed(() => ({
   }
 
   .grid-half > div {
-    flex: 1 1 calc(50% - var(--mvpb-spacing-2) / 2);
+    flex: 0 1 calc(50% - var(--mvpb-spacing-2) / 2);
   }
 
   .grid-sixty-fourty {
