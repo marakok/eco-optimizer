@@ -19,5 +19,4 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-11-07",
-  modules: ["vue3-carousel-nuxt"],
 });
