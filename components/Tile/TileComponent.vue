@@ -1,5 +1,13 @@
 <template>
   <div v-editable="blok" class="tile" :style="tileStyles">
+    <div class="tile--icon-container">
+      <StoryblokComponent
+        v-for="nestedBlok in blok.icon"
+        :key="nestedBlok._uid"
+        :blok="nestedBlok"
+      />
+    </div>
+
     <StoryblokComponent
       v-for="nestedBlok in blok.richText"
       :key="nestedBlok._uid"
@@ -24,5 +32,9 @@ const tileStyles = computed(() => ({
 <style scoped>
 .tile {
   background-color: var(--theme-background-color);
+}
+
+.tile--icon-container {
+  margin-top: var(--mvpb-spacing-1);
 }
 </style>

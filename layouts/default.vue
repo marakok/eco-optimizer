@@ -1,9 +1,9 @@
 <template>
   <ScrollProgressComponent />
 
-  <PrimaryNavComponent v-if="$viewport.isGreaterThan('tablet')" />
+  <!-- <PrimaryNavComponent v-if="$viewport.isGreaterThan('tablet')" /> -->
 
-  <div v-else class="mobile-header">
+  <!-- <div v-else class="mobile-header">
     <NuxtLink aria-label="logo" to="/" class="mobile-logo">
       <LogoComponent />
     </NuxtLink>
@@ -15,19 +15,19 @@
     >
       <Icon name="uil:align-justify" class="mobile-menu-icon" />
     </button>
-  </div>
+  </div> -->
 
-  <MobileNavComponent ref="mobileNavRef" />
+  <!-- <MobileNavComponent ref="mobileNavRef" /> -->
 
-  <Transition name="page" mode="out-in">
+  <!-- <Transition name="page" mode="out-in">
     <div :key="$route.fullPath">
       <NuxtPage />
       <FooterComponent />
     </div>
-  </Transition>
+  </Transition> -->
 
-  <PageScreenComponent />
-  <BreakpointComponent v-if="isDevelopment" />
+  <!-- <PageScreenComponent /> -->
+  <!-- <BreakpointComponent v-if="isDevelopment" /> -->
 </template>
 
 <script setup>
