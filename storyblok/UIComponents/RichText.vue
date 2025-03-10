@@ -4,15 +4,14 @@
     class="rich-text"
     :class="classes"
     :style="styles"
-    ref="contentRef"
+    ref="richTextRef"
   >
     <div
       class="rich-text-content"
-      :class="{ 'animate-in': blok.animate, 'full-width': blok.fullWidth }"
+      :class="{ 'full-width': blok.fullWidth }"
       :style="contentContainerStyles"
-      v-html="renderedContent"
+      v-html="processedContent"
       @click="handleClick"
-      ref="animatedContent"
     ></div>
 
     <a
@@ -21,46 +20,38 @@
       class="rich-text--cta"
       target="_blank"
     >
-      <ButtonComponent
-        type="button"
-        ref="animatedButton"
-        :variant="props.blok.ctaVariant || 'tertiary'"
-        >{{ blok.ctaText }}</ButtonComponent
-      >
+      <ButtonComponent type="button" :variant="blok.ctaVariant || 'tertiary'">{{
+        blok.ctaText
+      }}</ButtonComponent>
     </a>
 
     <NuxtLink
-      v-else-if="blok.cta?.cached_url.length"
+      v-else-if="blok.cta?.cached_url?.length"
       :to="`/${blok.cta.cached_url}`"
       class="rich-text--cta"
-      :class="[ctaClasses, { 'animate-in': blok.animate }]"
+      :class="ctaClasses"
     >
-      <ButtonComponent
-        type="button"
-        ref="animatedButton"
-        :variant="props.blok.ctaVariant || 'tertiary'"
-        >{{ blok.ctaText }}</ButtonComponent
-      >
+      <ButtonComponent type="button" :variant="blok.ctaVariant || 'tertiary'">{{
+        blok.ctaText
+      }}</ButtonComponent>
     </NuxtLink>
   </div>
 </template>
 
 <script setup>
-import { inView, animate } from "motion";
+import { computed, onMounted, nextTick, ref, h, render } from "vue";
+import { renderRichText } from "@storyblok/vue";
+import * as Icons from "#/Icons";
 
 const props = defineProps({
   blok: {
     type: Object,
-    default: () => ({
-      animate: false,
-    }),
+    required: true,
   },
 });
 
+const richTextRef = ref(null);
 const router = useRouter();
-const contentRef = ref(null);
-const animatedContent = ref(null);
-const animatedButton = ref(null);
 
 const classes = computed(() => ({
   "no-margin": props.blok.noVerticalSpacing,
@@ -77,6 +68,27 @@ const textSizeMultiplier = computed(() => {
   return 1 + level * 0.1;
 });
 
+// Replace icon placeholders in content
+const processedContent = computed(() => {
+  if (!props.blok.content) return "";
+
+  let htmlContent = renderRichText(props.blok.content);
+
+  // Replace icon tags <IconName /> with the actual icon component
+  Object.keys(Icons).forEach((iconName) => {
+    // Handle both raw tag and HTML-encoded tag formats
+    const iconRegexRaw = new RegExp(`<${iconName}\\s*\\/>`, "g");
+    const iconRegexEncoded = new RegExp(`&lt;${iconName}\\s*\\/&gt;`, "g");
+
+    const replacement = `<span class="inline-icon" data-icon="${iconName}"></span>`;
+
+    htmlContent = htmlContent.replace(iconRegexRaw, replacement);
+    htmlContent = htmlContent.replace(iconRegexEncoded, replacement);
+  });
+
+  return htmlContent;
+});
+
 const handleClick = (event) => {
   const anchor = event.target.closest("a");
 
@@ -84,12 +96,12 @@ const handleClick = (event) => {
 
   if (
     anchor.getAttribute("uuid") ||
-    anchor.getAttribute("href").startsWith("/")
+    anchor.getAttribute("href")?.startsWith("/")
   ) {
     event.preventDefault();
     router.push(anchor.getAttribute("href"));
-  } else {
-    window.open(href, "_blank");
+  } else if (anchor.getAttribute("href")) {
+    window.open(anchor.getAttribute("href"), "_blank");
   }
 };
 
@@ -104,49 +116,36 @@ const contentContainerStyles = computed(() => ({
   padding: props.blok.backgroundColor ? "var(--mvpb-spacing-base-6)" : 0,
 }));
 
-const renderedContent = computed(() => {
-  return renderRichText(props.blok.content);
-});
-
+// Add the icon components after the component is mounted
 onMounted(() => {
-  if (props.blok.animate && contentRef.value) {
-    if (animatedButton.value) {
-      nextTick(() => {
-        animatedButton.value.$el.style.opacity = "0";
-        animatedButton.value.$el.style.transform = "translateY(50px)";
-      });
-    }
+  nextTick(() => {
+    if (!richTextRef.value) return;
 
-    animatedContent.value.style.opacity = "0";
-    animatedContent.value.style.transform = "translateY(50px)";
+    const iconPlaceholders = richTextRef.value.querySelectorAll(".inline-icon");
 
-    inView(
-      contentRef.value,
-      () => {
-        if (animatedButton.value) {
-          animate(
-            animatedButton.value.$el,
-            { opacity: 1, transform: "translateY(0px)" },
-            {
-              duration: 0.6,
-              easing: [0.25, 0.1, 0.25, 1.0], // Cubic bezier easing
-            }
-          );
-        }
-        animate(
-          animatedContent.value,
-          { opacity: 1, transform: "translateY(0px)" },
-          {
-            duration: 0.6,
-            easing: [0.25, 0.1, 0.25, 1.0], // Cubic bezier easing
-          }
-        );
-      },
-      {
-        amount: 0.9,
+    iconPlaceholders.forEach((placeholder) => {
+      const iconName = placeholder.dataset.icon;
+      if (Icons[iconName]) {
+        const IconComponent = Icons[iconName];
+
+        // Create the icon element directly using the render function
+        const iconVNode = h(IconComponent);
+
+        // Create a wrapper element
+        const wrapper = document.createElement("span");
+        wrapper.style.display = "inline-flex";
+        wrapper.style.verticalAlign = "middle";
+        wrapper.style.alignItems = "center";
+        wrapper.style.marginBottom = "0";
+
+        // Replace the placeholder with the wrapper
+        placeholder.parentNode.replaceChild(wrapper, placeholder);
+
+        // Render the icon into the wrapper
+        render(iconVNode, wrapper);
       }
-    );
-  }
+    });
+  });
 });
 </script>
 
@@ -194,10 +193,6 @@ onMounted(() => {
   text-decoration: none;
   margin: 0;
 
-  &.animate-in {
-    will-change: transform, opacity;
-  }
-
   &--left {
     align-self: flex-start;
   }
@@ -221,10 +216,6 @@ onMounted(() => {
     width: 100%;
   }
 
-  &.animate-in {
-    will-change: transform, opacity;
-  }
-
   &::after {
     content: "";
     position: absolute;
@@ -234,5 +225,20 @@ onMounted(() => {
   }
 
   @extend .mvpb-rich-text;
+
+  :deep(p) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  :deep(.inline-icon) {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 0.25rem;
+    height: 1em;
+  }
 }
 </style>

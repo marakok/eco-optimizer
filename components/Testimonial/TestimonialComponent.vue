@@ -124,6 +124,15 @@ const renderedContent = computed(() => {
   border-radius: var(--mvpb-border-radius, 0.8rem);
   background-color: var(--testimonial-background-color);
   flex: 1;
+  transition: background-color 0.3s ease;
+
+  .testimonial:hover & {
+    background-color: color-mix(
+      in srgb,
+      var(--testimonial-background-color) 95%,
+      white
+    );
+  }
 }
 
 .testimonial--quote-icon {
@@ -146,7 +155,7 @@ const renderedContent = computed(() => {
 .testimonial--author-container {
   display: flex;
   align-items: center;
-  gap: var(--mvpb-spacing-4);
+  gap: var(--mvpb-spacing-base-4);
 }
 
 .testimonial--author-image {
@@ -181,11 +190,11 @@ const renderedContent = computed(() => {
 }
 
 .testimonial--odd .testimonial--author-container {
-  margin-bottom: var(--mvpb-spacing-2);
+  margin-bottom: var(--mvpb-spacing-base-6);
 }
 
 .testimonial--even .testimonial--author-container {
-  margin-top: var(--mvpb-spacing-2);
+  margin-top: var(--mvpb-spacing-base-6);
 }
 
 @media (min-width: breakpoint(tablet)) {
