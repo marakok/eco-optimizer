@@ -1,24 +1,26 @@
 <template>
-  <header class="header container">
-    <NuxtLink to="/" class="header--logo">
-      <LogoComponent />
-    </NuxtLink>
-    <nav v-if="navItems">
-      <ul class="header--menu-list">
-        <li
-          v-for="navItem in navItems"
-          :key="navItem._uid"
-          class="header--menu-list-item"
-        >
-          <NuxtLink
-            :to="`/${navItem.link.cached_url}`"
-            class="header--menu-list-item-link"
+  <header class="header">
+    <div class="container">
+      <NuxtLink to="/" class="header--logo">
+        <LogoComponent />
+      </NuxtLink>
+      <nav v-if="navItems">
+        <ul class="header--menu-list">
+          <li
+            v-for="navItem in navItems"
+            :key="navItem._uid"
+            class="header--menu-list-item"
           >
-            {{ navItem.link.story.name }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </nav>
+            <NuxtLink
+              :to="`/${navItem.link.cached_url}`"
+              class="header--menu-list-item-link"
+            >
+              {{ navItem.link.story.name }}
+            </NuxtLink>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </header>
 </template>
 

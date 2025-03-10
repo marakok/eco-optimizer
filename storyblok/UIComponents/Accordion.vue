@@ -48,9 +48,6 @@ const accordionStyles = computed(() => ({
   "--accordion-background-color": props.blok.backgroundColor || "transparent",
   "--accordion-text-color": props.blok.textColor || "inherit",
   "--theme-font-color": props.blok.textColor || "inherit",
-  "--accordion-border-color": props.blok.backgroundColor
-    ? darkenColor(props.blok.backgroundColor, 30)
-    : "var(--mvpb-color-dark)",
 }));
 
 onMounted(() => {
@@ -69,8 +66,8 @@ onMounted(() => {
   color: var(--accordion-text-color);
 }
 
-:deep(.accordion--container:not(:last-child)) {
-  border-bottom: 1px solid var(--accordion-border-color, var(--mvpb-color-dark));
+:deep(.accordion--container) {
+  background-color: var(--accordion-background-color);
 }
 
 :deep(.accordion--container > div) {

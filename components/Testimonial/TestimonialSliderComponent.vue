@@ -81,10 +81,11 @@ const sliderStyles = computed(() => ({
 @use "@/base/breakpoints.scss" as *;
 
 .testimonial-slider {
+  --size: 50px;
+
   position: relative;
   width: 100%;
   background-color: var(--slider-background-color, transparent);
-  padding: var(--mvpb-spacing-6) 0;
 }
 
 .testimonial-slide {
@@ -95,6 +96,10 @@ const sliderStyles = computed(() => ({
   @media (min-width: breakpoint(tablet)) {
     padding: 0 var(--mvpb-spacing-1);
   }
+}
+
+:deep(.carousel) {
+  padding-bottom: calc(var(--mvpb-spacing-base-12) * 2.2);
 }
 
 :deep(.carousel__viewport) {
@@ -112,22 +117,19 @@ const sliderStyles = computed(() => ({
 
 :deep(.carousel__prev),
 :deep(.carousel__next) {
-  height: 50px;
-  width: 50px;
-  color: var(--mvpb-color-light);
-  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  height: var(--size);
+  width: var(--size);
+  color: var(--mvpb-color-grey-700);
   border-radius: 50%;
 
-  top: 50%;
+  top: auto;
+  bottom: 0;
   transform: translateY(-50%);
 
   &:hover {
-    color: var(--mvpb-color-primary);
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-
-  @media (min-width: breakpoint(tablet)) {
-    top: 50%;
+    color: var(--mvpb-color-light);
+    outline: 2px solid var(--mvpb-color-grey-700);
   }
 }
 
@@ -140,10 +142,10 @@ const sliderStyles = computed(() => ({
 }
 
 :deep(.carousel__next) {
-  right: -25px;
+  left: var(--size);
 
   @media (min-width: breakpoint(tablet)) {
-    right: -25px;
+    left: var(--size);
   }
 }
 
