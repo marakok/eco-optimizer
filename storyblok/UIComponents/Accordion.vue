@@ -9,7 +9,13 @@
       }"
     >
       <template #default="{ item, open }">
-        <p class="accordion--label" :class="{ open: open }">
+        <p
+          class="accordion--label"
+          :class="{ open: open }"
+          :style="{
+            color: item.textColor || 'inherit',
+          }"
+        >
           <span class="accordion--label-text">{{ item.label }}</span>
           <span class="accordion--label-arrow"
             ><Icon name="uil:angle-right"
@@ -17,8 +23,15 @@
         </p>
       </template>
 
-      <template #item="{ item, open }">
-        <div class="accordion--content" :class="{ open: open }">
+      <template #item="{ item, open, index }">
+        <div
+          class="accordion--content"
+          :class="{ open: open }"
+          :style="{
+            backgroundColor: item.backgroundColor || 'transparent',
+            color: item.textColor || 'inherit',
+          }"
+        >
           <Transition name="accordion-fade">
             <div v-if="open" class="accordion--content-inner">
               <StoryblokComponent
@@ -55,6 +68,8 @@ onMounted(() => {
     label: item.label,
     defaultOpen: item.defaultOpen || false,
     content: item.content,
+    backgroundColor: item.backgroundColor || null,
+    textColor: item.textColor || null,
   }));
 });
 </script>
