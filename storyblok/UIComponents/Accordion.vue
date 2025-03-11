@@ -1,19 +1,17 @@
 <template>
-  <div v-editable="blok" class="accordion" :style="accordionStyles">
+  <div v-editable="blok" class="accordion">
     <UAccordion
       size="xl"
-      :items="items"
-      :ui="{
-        wrapper: 'accordion--wrapper',
-        container: 'accordion--container',
-      }"
+      :items="blok.items"
+      :ui="{ wrapper: 'accordion--wrapper', container: 'accordion--container' }"
     >
-      <template #default="{ item, open }">
+      <template #default="{ item, open, index }">
         <p
           class="accordion--label"
           :class="{ open: open }"
           :style="{
             color: item.textColor || 'inherit',
+            backgroundColor: item.backgroundColor || null,
           }"
         >
           <span class="accordion--label-text">{{ item.label }}</span>
@@ -23,14 +21,14 @@
         </p>
       </template>
 
-      <template #item="{ item, open, index }">
+      <template #item="{ item, open }">
         <div
-          class="accordion--content"
-          :class="{ open: open }"
+          :class="['accordion--content', { open: open }]"
           :style="{
-            backgroundColor: item.backgroundColor || 'transparent',
             color: item.textColor || 'inherit',
+            backgroundColor: item.backgroundColor || null,
           }"
+          class="accordion--container"
         >
           <Transition name="accordion-fade">
             <div v-if="open" class="accordion--content-inner">
@@ -54,24 +52,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const items = ref([]);
-
-const accordionStyles = computed(() => ({
-  "--accordion-background-color": props.blok.backgroundColor || "transparent",
-  "--accordion-text-color": props.blok.textColor || "inherit",
-  "--theme-font-color": props.blok.textColor || "inherit",
-}));
-
-onMounted(() => {
-  items.value = props.blok.items.map((item) => ({
-    label: item.label,
-    defaultOpen: item.defaultOpen || false,
-    content: item.content,
-    backgroundColor: item.backgroundColor || null,
-    textColor: item.textColor || null,
-  }));
-});
 </script>
 
 <style scoped lang="scss">
@@ -81,22 +61,12 @@ onMounted(() => {
   color: var(--accordion-text-color);
 }
 
-:deep(.accordion--container) {
-  background-color: var(--accordion-background-color);
-}
-
 :deep(.accordion--container > div) {
   overflow: hidden;
   transition: height 0.3s ease-out;
 }
 
 .accordion--content {
-  padding: 0 0 var(--mvpb-spacing-base-3) var(--mvpb-spacing-base-3);
-}
-
-.accordion--content-inner {
-  transform-origin: top;
-  transition: opacity 0.3s, transform 0.3s;
 }
 
 :deep(div) {
@@ -120,13 +90,6 @@ onMounted(() => {
 .accordion--label-text {
   position: relative;
   display: inline-block;
-  transition: transform 0.3s ease-out;
-}
-
-.accordion--label:not(.open):hover {
-  .accordion--label-text {
-    transform: translateX(var(--mvpb-spacing-base-2));
-  }
 }
 
 .accordion--label-arrow {
@@ -135,8 +98,6 @@ onMounted(() => {
 }
 
 .accordion--label.open {
-  transform: translateX(var(--mvpb-spacing-base-2));
-
   .accordion--label-arrow {
     transform: rotate(90deg);
   }

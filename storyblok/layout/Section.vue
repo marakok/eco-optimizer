@@ -24,7 +24,10 @@
       </div>
     </ClientOnly>
 
-    <div class="section--inner container" :class="contentPositionClass">
+    <div
+      class="section--inner"
+      :class="[containerSizeClass, contentPositionClass]"
+    >
       <div class="section--content">
         <p
           v-if="blok.sectionTitle"
@@ -80,6 +83,17 @@ const backgroundStyles = computed(() => ({
 const sectionClasses = computed(() => ({
   "has-background-color": props.blok.backgroundColor,
 }));
+
+const containerSizeClass = computed(() => {
+  switch (props.blok.containerSize) {
+    case "small":
+      return "container-small";
+    case "medium":
+      return "container";
+    default:
+      return "container-large";
+  }
+});
 
 const sectionTitlePositionClass = computed(() => {
   switch (props.blok.sectionTitlePosition) {
