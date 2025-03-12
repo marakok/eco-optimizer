@@ -31,7 +31,19 @@
         </div>
         <ClientOnly>
           <div class="testimonial--content">
-            <p class="testimonial--text" v-html="renderedContent"></p>
+            <!-- Use StoryblokComponent for rendering all content types -->
+            <StoryblokComponent
+              v-for="contentBlok in blok.content"
+              :key="contentBlok._uid"
+              :blok="contentBlok"
+            />
+
+            <!-- Fallback to legacy text field if no content components -->
+            <p
+              v-if="!hasContentComponents"
+              class="testimonial--text"
+              v-html="legacyContent"
+            ></p>
           </div>
         </ClientOnly>
       </div>
@@ -71,7 +83,7 @@ const props = defineProps({
 });
 
 const testimonialRef = ref(null);
-const isOdd = computed(() => props.index % 2 === 0); // Using 0-based indexing, so even index = odd card
+const isOdd = computed(() => props.index % 2 === 0);
 
 const layoutClass = computed(() => ({
   "testimonial--odd": isOdd.value,
@@ -85,7 +97,11 @@ const testimonialStyles = computed(() => ({
   "--testimonial-author-title-color": props.blok.authorTitleColor || "#9ca3af",
 }));
 
-const renderedContent = computed(() => {
+const hasContentComponents = computed(() => {
+  return Array.isArray(props.blok.content) && props.blok.content.length > 0;
+});
+
+const legacyContent = computed(() => {
   if (props.blok.content?.type === "doc") {
     return renderRichText(props.blok.content);
   }

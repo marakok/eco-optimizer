@@ -120,12 +120,15 @@ const sliderStyles = computed(() => ({
   position: absolute;
   height: var(--size);
   width: var(--size);
-  color: var(--mvpb-color-grey-700);
+  color: var(--mvpb-color-grey-20);
   border-radius: 50%;
 
   top: auto;
   bottom: 0;
-  transform: translateY(-50%);
+
+  @media (min-width: breakpoint(desktop)) {
+    transform: translateY(100%);
+  }
 
   &:hover {
     color: var(--mvpb-color-light);
@@ -155,7 +158,7 @@ const sliderStyles = computed(() => ({
 
 :deep(.carousel__pagination-button) {
   &::after {
-    background-color: var(--mvpb-color-grey-40);
+    background-color: var(--mvpb-color-grey-20);
     width: 12px;
     height: 12px;
     border-radius: 50%;
