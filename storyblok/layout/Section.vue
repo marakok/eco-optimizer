@@ -241,11 +241,6 @@ onMounted(() => {
   &.section--height-auto {
     min-height: auto;
   }
-
-  &.has-background-color {
-    padding-left: var(--mvpb-spacing-base-4);
-    padding-right: var(--mvpb-spacing-base-4);
-  }
 }
 
 .section--title {
@@ -320,7 +315,6 @@ onMounted(() => {
   z-index: 1;
   display: flex;
   min-height: var(--section-height, 75vh);
-  padding: 0 var(--mvpb-spacing-base-8);
 
   &--top-left {
     align-items: flex-start;

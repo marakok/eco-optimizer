@@ -8,6 +8,7 @@ import PhoneIcon from "./PhoneIcon";
 import OpenQuoteIcon from "./OpenQuoteIcon";
 import TreeIcon from "./TreeIcon";
 import StarIcon from "./StarIcon.vue";
+import FlowerIcon from "./FlowerIcon.vue";
 
 export {
   GraphIcon,
@@ -20,4 +21,5 @@ export {
   OpenQuoteIcon,
   TreeIcon,
   StarIcon,
+  FlowerIcon,
 };
