@@ -1,5 +1,7 @@
+<!-- will do primary tile, secomndary tile etc -->
+
 <template>
-  <div v-editable="blok"></div>
+  <TileComponent :blok="blok" />
 </template>
 
 <script setup>
@@ -10,3 +12,5 @@ defineProps({
   },
 });
 </script>
+
+<style scoped></style>

@@ -1,24 +1,26 @@
 <template>
-  <header class="header container">
-    <NuxtLink to="/" class="header--logo">
-      <LogoComponent />
-    </NuxtLink>
-    <nav v-if="navItems">
-      <ul class="header--menu-list">
-        <li
-          v-for="navItem in navItems"
-          :key="navItem._uid"
-          class="header--menu-list-item"
-        >
-          <NuxtLink
-            :to="`/${navItem.link.cached_url}`"
-            class="header--menu-list-item-link"
+  <header class="header">
+    <div class="container">
+      <NuxtLink to="/" class="header--logo">
+        <LogoComponent />
+      </NuxtLink>
+      <nav v-if="navItems">
+        <ul class="header--menu-list">
+          <li
+            v-for="navItem in navItems"
+            :key="navItem._uid"
+            class="header--menu-list-item"
           >
-            {{ navItem.link.story.name }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </nav>
+            <NuxtLink
+              :to="`/${navItem.link.cached_url}`"
+              class="header--menu-list-item-link"
+            >
+              {{ navItem.link.story.name }}
+            </NuxtLink>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </header>
 </template>
 
@@ -41,10 +43,11 @@ const navItems = computed(() => props.navigationData);
   right: 0;
   display: flex;
   align-items: center;
-  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-base-8) 0
-    var(--mvpb-spacing-base-8);
+  padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-8)
+    var(--mvpb-spacing-base-5) var(--mvpb-spacing-8);
   z-index: 9;
   gap: var(--mvpb-spacing-6);
+  background-color: var(--mvpb-color-light);
 }
 
 .header--menu {

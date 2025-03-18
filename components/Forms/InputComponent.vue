@@ -4,6 +4,7 @@
     <input
       class="input-component"
       v-bind="$props"
+      :placeholder="blok.placeholder"
       :class="{ 'invalid-input': !isValid && isSubmitted }"
       @input="$emit('update:modelValue', $event.target.value)"
     />
@@ -38,33 +39,31 @@ defineEmits(["update:modelValue"]);
   width: 100%;
 
   &--label {
-    margin: 0 0 var(--mvpb-spacing-base-2) 0;
+    text-transform: uppercase;
+    margin: 0 0 var(--mvpb-spacing-base-2) var(--mvpb-spacing-base-8);
     color: var(--form-label-color);
+  }
+
+  &:not(:last-child) {
+    margin-bottom: var(--mvpb-spacing-1);
   }
 }
 
 .input-component {
-  text-indent: var(--mvpb-spacing-base-4);
-  padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-base-4)
-    var(--mvpb-spacing-base-4) 0;
-  border: 2px solid var(--mvpb-color-grey-40);
+  text-indent: var(--mvpb-spacing-base-8);
+  min-height: 60px;
+  border: none;
   color: var(--form-text-color);
-  background: var(--form-input-bg-color);
-  width: 100%;
-  border-radius: var(--mvpb-spacing-base-1);
+  background: var(--mvpb-color-grey-800);
+  border-radius: 35px;
+  margin-bottom: 0;
 
-  &:focus,
-  &:hover {
-    border-color: var(--mvpb-color-tertiary);
+  &:focus {
+    outline: 1px solid var(--mvpb-color-grey-900);
   }
 
   &::placeholder {
-    color: var(--form-placeholder-color);
-  }
-
-  &:not(:placeholder-shown):invalid {
-    border-color: #ff0000;
-    border-bottom: 1px dotted #ff0000;
+    color: var(mvpb-color-grey-900);
   }
 }
 

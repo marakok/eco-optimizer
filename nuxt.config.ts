@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   ...buildConfig,
   ...modulesConfig,
   ...pathsConfig,
-
   runtimeConfig,
   app: appConfig,
   nitro: nitroConfig,

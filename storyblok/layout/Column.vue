@@ -35,6 +35,7 @@ const columnClasses = computed(() => ({
 }));
 
 const contentStyles = computed(() => ({
+  "--column-content-justify": props.blok.horizontalAlign || "flex-start",
   "--column-content-align":
     props.blok.verticalAlign === "middle"
       ? "center"
@@ -66,7 +67,7 @@ const columnStyles = computed(() => ({
 .column {
   display: flex;
   flex-basis: 100%;
-  flex: 1;
+  flex: 0 1 100%;
   flex-direction: column;
   background-color: var(--column-background-color, transparent);
   position: relative;
@@ -98,5 +99,6 @@ const columnStyles = computed(() => ({
   display: flex;
   flex-direction: column;
   justify-content: var(--column-content-align, flex-start);
+  align-items: var(--column-content-justify, flex-start);
 }
 </style>

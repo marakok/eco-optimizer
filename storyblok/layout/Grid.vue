@@ -20,8 +20,9 @@ const gridClasses = computed(() => ({
   grid: true,
   [`grid-${props.blok.layout}`]: true,
   "vertical-spacing": props.blok.verticalSpacing,
+  "vertical-align": props.blok.verticalAlign,
   "reverse-mobile": props.blok.reverseMobile,
-  flex: props.blok.gridSixtyFourty,
+  flex: props.blok.gridSixtyFourty || props.blok.layout === "half",
   "grid-sixty-fourty": props.blok.gridSixtyFourty,
   "grid-sixty-fourty-reverse":
     props.blok.gridSixtyFourty && props.blok.reverseOrder,
@@ -51,10 +52,13 @@ const gridClasses = computed(() => ({
 }
 
 .grid-half {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mvpb-spacing-2);
 
-  .grid & {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  & > div {
+    flex: 1 1 100%;
+    min-width: 300px;
   }
 }
 
@@ -77,6 +81,7 @@ const gridClasses = computed(() => ({
 .flex {
   display: flex;
   flex-direction: column;
+  gap: var(--mvpb-spacing-2);
 }
 
 .grid-sixty-fourty-reverse {
@@ -99,6 +104,10 @@ const gridClasses = computed(() => ({
       display: flex;
       flex-direction: initial;
     }
+  }
+
+  .grid-half > div {
+    flex: 0 1 calc(50% - var(--mvpb-spacing-2) / 2);
   }
 
   .grid-sixty-fourty {

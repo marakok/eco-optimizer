@@ -39,6 +39,8 @@ const stories = ref({});
 onMounted(() => {
   stories.value = nuxtApp.$stories;
 });
+
+// test
 </script>
 
 <style scoped lang="scss">

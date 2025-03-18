@@ -160,11 +160,11 @@ export const getAutoReplyTemplate = (submission) => {
           <h1 style="margin: 0;">Dank u voor uw contact met ons</h1>
         </div>
         <div class="content">
-          <p>Dear ${submission.name || "Gewaardeerde klant"},</p>
+          <p>Gewaardeerde ${submission.name || "klant"},</p>
           
           <p>Dank u voor uw bericht aan Ecooptimizer. We hebben uw bericht ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
           <p>We reageren doorgaans binnen 1-2 werkdagen.</p>
-          
+          <p>Heeft u nog vragen? Stuur dan een e-mail naar <a href="mailto:info@ecooptimizer.co">info@ecooptimizer.co</a>. Gelieve niet te antwoorden op deze e-mail.</p>
           <p>Met vriendelijke groet,<br>Ecooptimizer</p>
         </div>
       </body>

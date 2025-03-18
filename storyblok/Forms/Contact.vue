@@ -1,5 +1,8 @@
 <template>
-  <div class="contact-form-container">
+  <div
+    class="contact-form-container"
+    :style="`background-color: ${props.blok.backgroundColor}`"
+  >
     <form
       v-if="!isSubmitted"
       @submit.prevent="submitForm"
@@ -7,33 +10,37 @@
       :style="formStyles"
       novalidate
     >
-      <InputComponent
-        v-for="field in inputFields"
-        :key="field.id"
-        :blok="field"
-        v-model="form[field.id]"
-        :isValid="isFieldValid[field.id]"
-        :isSubmitted="isSubmitted"
-        :errorMessage="fieldErrorMessages[field.id]"
-      />
+      <div class="contact-form--left">
+        <InputComponent
+          v-for="field in inputFields"
+          :key="field.id"
+          :blok="field"
+          v-model="form[field.id]"
+          :isValid="isFieldValid[field.id]"
+          :isSubmitted="isSubmitted"
+          :errorMessage="fieldErrorMessages[field.id]"
+        />
+      </div>
+      <div class="contact-form--right">
+        <TextareaComponent
+          class="contact-form--textarea"
+          :blok="messageField"
+          v-model="form.message"
+          :isValid="isFieldValid.message"
+          :isSubmitted="isSubmitted"
+          :errorMessage="fieldErrorMessages.message"
+        />
 
-      <TextareaComponent
-        :blok="messageField"
-        v-model="form.message"
-        :isValid="isFieldValid.message"
-        :isSubmitted="isSubmitted"
-        :errorMessage="fieldErrorMessages.message"
-      />
-
-      <ButtonComponent
-        type="submit"
-        class="submit-button"
-        :variant="buttonVariant"
-        :class="{ 'button-disabled': !isFormValid }"
-        :disabled="isLoading || !isFormValid"
-      >
-        {{ isLoading ? "Bezig met verzenden..." : "Registreren" }}
-      </ButtonComponent>
+        <ButtonComponent
+          type="submit"
+          class="submit-button"
+          :variant="buttonVariant"
+          :class="{ 'button-disabled': !isFormValid }"
+          :disabled="isLoading || !isFormValid"
+        >
+          {{ isLoading ? "Bezig met verzenden..." : "Stuur bericht" }}
+        </ButtonComponent>
+      </div>
     </form>
 
     <div v-else class="thank-you-message">
@@ -58,14 +65,14 @@ const recaptchaInstance = useReCaptcha();
 const inputFields = [
   {
     id: "name",
-    title: "Naam *",
+    title: "Naam",
     type: "text",
     placeholder: "Uw naam?",
     required: true,
   },
   {
     id: "email",
-    title: "E-mail *",
+    title: "Email",
     type: "email",
     placeholder: "Uw e-mailadres?",
     required: true,
@@ -192,20 +199,51 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+@use "@/base/breakpoints.scss" as *;
+
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: var(--dq-spacing-3);
+  gap: var(--mvpb-spacing-1);
+
+  &--left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: breakpoint(desktop)) {
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.contact-form--textarea {
+  height: 100%;
+}
+
+.contact-form-container {
+  border-radius: 25px;
+  padding: var(--mvpb-spacing-1);
 }
 
 .submit-button {
-  margin-top: var(--dq-spacing-3);
   margin-bottom: 0;
 }
 
 .thank-you-message {
+  width: 50ch;
+
   &:deep(a) {
-    color: var(--dq-color-primary);
+    color: var(--mvpb-color-primary);
   }
 }
 </style>

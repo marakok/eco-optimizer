@@ -24,8 +24,18 @@
       </div>
     </ClientOnly>
 
-    <div class="section--inner container" :class="contentPositionClass">
+    <div
+      class="section--inner"
+      :class="[containerSizeClass, contentPositionClass]"
+    >
       <div class="section--content">
+        <p
+          v-if="blok.sectionTitle"
+          class="section--title"
+          :class="sectionTitlePositionClass"
+        >
+          {{ blok.sectionTitle }}
+        </p>
         <StoryblokComponent
           v-for="nestedBlok in blok.body"
           :key="nestedBlok._uid"
@@ -62,6 +72,8 @@ const sectionStyles = computed(() => ({
   "--section-margin-bottom": props.blok.removeVerticalSpacing
     ? "0"
     : "var(--mvpb-spacing-3)",
+  "--section-title-color":
+    props.blok.sectionTitleColor || "var(--theme-font-color)",
 }));
 
 const backgroundStyles = computed(() => ({
@@ -71,6 +83,28 @@ const backgroundStyles = computed(() => ({
 const sectionClasses = computed(() => ({
   "has-background-color": props.blok.backgroundColor,
 }));
+
+const containerSizeClass = computed(() => {
+  switch (props.blok.containerSize) {
+    case "small":
+      return "container-small";
+    case "medium":
+      return "container";
+    default:
+      return "container-large";
+  }
+});
+
+const sectionTitlePositionClass = computed(() => {
+  switch (props.blok.sectionTitlePosition) {
+    case "center":
+      return "section--title-center";
+    case "right":
+      return "section--title-right";
+    default:
+      return "section--title-left";
+  }
+});
 
 const sectionHeightClass = computed(() => {
   switch (props.blok.height) {
@@ -173,8 +207,6 @@ const contentPositionClass = computed(() => {
       return "section--inner--bottom-center";
     case "bottom-right":
       return "section--inner--bottom-right";
-    default:
-      return "section--inner--center";
   }
 });
 
@@ -209,10 +241,24 @@ onMounted(() => {
   &.section--height-auto {
     min-height: auto;
   }
+}
 
-  &.has-background-color {
-    padding-left: var(--mvpb-spacing-base-4);
-    padding-right: var(--mvpb-spacing-base-4);
+.section--title {
+  text-transform: uppercase;
+  font-family: var(--mvpb-font-primary-semi-bold);
+  color: var(--section-title-color);
+  margin: var(--mvpb-spacing-6) 0 0 0;
+
+  &.section--title-left {
+    text-align: left;
+  }
+
+  &.section--title-center {
+    text-align: center;
+  }
+
+  &.section--title-right {
+    text-align: right;
   }
 }
 
@@ -269,7 +315,6 @@ onMounted(() => {
   z-index: 1;
   display: flex;
   min-height: var(--section-height, 75vh);
-  padding: 0 var(--mvpb-spacing-base-8);
 
   &--top-left {
     align-items: flex-start;

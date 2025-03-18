@@ -1,5 +1,7 @@
 <template>
-  <div v-editable="blok"></div>
+  <div v-editable="blok">
+    <TestimonialComponent :blok="blok" />
+  </div>
 </template>
 
 <script setup>
