@@ -1,14 +1,13 @@
 <template>
   <div class="form-element">
     <label :for="blok.id" class="form-element--label">{{ blok.title }}</label>
-    <span>
-      <textarea
-        class="textarea-component"
-        v-bind="$props"
-        :class="{ 'invalid-input': !isValid && isSubmitted }"
-        @input="$emit('update:modelValue', $event.target.value)"
-      ></textarea>
-    </span>
+    <textarea
+      class="textarea-component"
+      v-bind="$props"
+      :placeholder="blok.placeholder"
+      :class="{ 'invalid-input': !isValid && isSubmitted }"
+      @input="$emit('update:modelValue', $event.target.value)"
+    ></textarea>
     <small v-if="!isValid && isSubmitted" class="error-message">
       {{ errorMessage }}
     </small>
@@ -37,31 +36,31 @@ defineEmits(["update:modelValue"]);
 .form-element {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  margin-bottom: var(--mvpb-spacing-base-2);
 
   &--label {
-    margin: 0 0 var(--mvpb-spacing-base-2) 0;
+    text-transform: uppercase;
+    margin: 0 0 var(--mvpb-spacing-base-2) var(--mvpb-spacing-base-8);
     color: var(--form-label-color);
   }
 }
 
 .textarea-component {
-  padding: var(--mvpb-spacing-base-4);
-  border: 2px solid var(--mvpb-color-grey-40);
+  text-indent: var(--mvpb-spacing-base-8);
+  min-height: 175px;
+  border: none;
   color: var(--form-text-color);
-  background: var(--form-input-bg-color);
+  background: var(--mvpb-color-grey-800);
+  border-radius: 35px;
   width: 100%;
-  min-height: 100px;
-  resize: vertical;
-  border-radius: var(--mvpb-spacing-base-1);
+  padding-top: var(--mvpb-spacing-base-6);
 
-  &:focus,
-  &:hover {
-    border-color: var(--mvpb-color-tertiary);
+  &:focus {
+    outline: 1px solid var(--mvpb-color-grey-900);
   }
 
   &::placeholder {
-    color: var(--form-placeholder-color);
+    color: var(mvpb-color-grey-900);
   }
 
   &:not(:placeholder-shown):invalid {

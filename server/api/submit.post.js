@@ -103,25 +103,28 @@ export default defineEventHandler(async (event) => {
     // Prepare submission data
     const submissionData = {
       name: body.name || "",
-      email: body.email,
+      email: body.email || "",
+      message: body.message || "",
       pageUri: body.pageUri || "",
     };
 
     // Send email notifications
     try {
-      // Email to admin
+      // Email to admin - IMPORTANT: Use the same authenticated email address for "from" field
       const adminMailOptions = {
-        from: process.env.SMTP_USER,
+        from: `"EcoOptimizer Contact Form" <${process.env.SMTP_USER}>`, // More descriptive sender name
         to: process.env.TO_EMAIL,
         subject: `New Contact Form Submission from ${
           submissionData.name || submissionData.email
         }`,
         html: getContactEmailTemplate(submissionData),
+        // Add reply-to header so replies go to the actual submitter
+        replyTo: submissionData.email,
       };
 
-      // Auto-reply to submitter
+      // Auto-reply to submitter - Use the same authenticated email but with a "no-reply" display name
       const autoReplyOptions = {
-        from: '"Ecooptimizer" <no_reply@eco-optimizer.com>',
+        from: `"EcoOptimizer No-Reply" <${process.env.SMTP_USER}>`, // This shows as "EcoOptimizer No-Reply" to the recipient
         to: submissionData.email,
         subject: "Dank u voor uw contact met Ecooptimizer.",
         html: getAutoReplyTemplate(submissionData),
