@@ -42,7 +42,7 @@ const classes = computed(() => ({
   gap: var(--mvpb-spacing-base-4);
   border: none;
   margin: 0;
-  min-height: 75px;
+  min-height: 50px;
   padding: var(--mvpb-spacing-base-5) var(--mvpb-spacing-base-6);
 }
 

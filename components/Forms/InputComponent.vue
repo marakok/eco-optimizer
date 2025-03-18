@@ -43,6 +43,10 @@ defineEmits(["update:modelValue"]);
     margin: 0 0 var(--mvpb-spacing-base-2) var(--mvpb-spacing-base-8);
     color: var(--form-label-color);
   }
+
+  &:not(:last-child) {
+    margin-bottom: var(--mvpb-spacing-1);
+  }
 }
 
 .input-component {
@@ -52,6 +56,7 @@ defineEmits(["update:modelValue"]);
   color: var(--form-text-color);
   background: var(--mvpb-color-grey-800);
   border-radius: 35px;
+  margin-bottom: 0;
 
   &:focus {
     outline: 1px solid var(--mvpb-color-grey-900);

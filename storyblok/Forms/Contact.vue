@@ -199,9 +199,11 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+@use "@/base/breakpoints.scss" as *;
+
 .contact-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--mvpb-spacing-1);
 
   &--left {
@@ -214,6 +216,13 @@ onMounted(async () => {
     flex: 1;
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media (min-width: breakpoint(desktop)) {
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 

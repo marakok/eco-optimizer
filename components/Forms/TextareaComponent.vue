@@ -46,7 +46,7 @@ defineEmits(["update:modelValue"]);
 }
 
 .textarea-component {
-  text-indent: var(--mvpb-spacing-base-8);
+  padding-left: var(--mvpb-spacing-base-8);
   min-height: 175px;
   border: none;
   color: var(--form-text-color);
