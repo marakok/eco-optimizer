@@ -1,7 +1,6 @@
 <template>
   <div class="testimonial-slider" :style="sliderStyles" ref="sliderRef">
     <Carousel
-      :breakpoints="breakpoints"
       :autoplay="autoplay"
       :pauseAutoplayOnHover="true"
       :transition="600"
@@ -63,6 +62,12 @@ const sliderStyles = computed(() => ({
   position: relative;
   width: 75%;
   background-color: var(--slider-background-color, transparent);
+}
+
+@media (min-width: breakpoint(tablet)) {
+  .testimonial-slider {
+    width: 50%;
+  }
 }
 
 .testimonial-slide {
