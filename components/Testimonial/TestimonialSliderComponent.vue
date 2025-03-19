@@ -5,7 +5,7 @@
       :autoplay="autoplay"
       :pauseAutoplayOnHover="true"
       :transition="600"
-      :wrapAround="true"
+      :wrapAround="false"
       :snapAlign="'center'"
     >
       <Slide
@@ -49,29 +49,6 @@ const props = defineProps({
 
 const sliderRef = ref(null);
 
-const breakpoints = ref({
-  320: {
-    itemsToShow: 1,
-    snapAlign: "center",
-  },
-  768: {
-    itemsToShow: 1.5,
-    snapAlign: "center",
-  },
-  1024: {
-    itemsToShow: 2.2,
-    snapAlign: "center",
-  },
-  1280: {
-    itemsToShow: 2.8,
-    snapAlign: "center",
-  },
-  1440: {
-    itemsToShow: 3.2,
-    snapAlign: "center",
-  },
-});
-
 const sliderStyles = computed(() => ({
   "--slider-background-color": props.backgroundColor || "#000", // Default to black background like in your screenshot
 }));
@@ -84,7 +61,7 @@ const sliderStyles = computed(() => ({
   --size: 50px;
 
   position: relative;
-  width: 100%;
+  width: 75%;
   background-color: var(--slider-background-color, transparent);
 }
 

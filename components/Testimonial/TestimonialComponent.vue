@@ -136,7 +136,7 @@ const legacyContent = computed(() => {
 }
 
 .testimonial--content-wrapper {
-  padding: var(--mvpb-spacing-3);
+  padding: var(--mvpb-spacing-base-8);
   border-radius: var(--mvpb-border-radius, 0.8rem);
   background-color: var(--testimonial-background-color);
   flex: 1;
@@ -152,7 +152,7 @@ const legacyContent = computed(() => {
 }
 
 .testimonial--quote-icon {
-  margin-bottom: var(--mvpb-spacing-4);
+  margin-bottom: var(--mvpb-spacing-1);
   color: var(--mvpb-color-quaternary);
 }
 
