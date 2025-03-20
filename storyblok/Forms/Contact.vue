@@ -82,7 +82,7 @@ const inputFields = [
 const messageField = {
   id: "message",
   title: "Message",
-  placeholder: "Would you like to leave a message?",
+  placeholder: "U kunt hier een bericht schrijven?",
   required: true,
 };
 
