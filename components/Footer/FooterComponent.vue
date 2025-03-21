@@ -25,7 +25,7 @@
           ></small
         >
         <small class="footer--text">
-          <p class="footer--link"><LocationIcon />Eindhoven</p></small
+          <p class="footer--link"><LocationIcon />Utrecht</p></small
         >
       </div>
     </div>

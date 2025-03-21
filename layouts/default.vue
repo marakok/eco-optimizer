@@ -1,7 +1,10 @@
 <template>
   <ScrollProgressComponent />
 
-  <PrimaryNavComponent v-if="$viewport.isGreaterThan('tablet')" />
+  <PrimaryNavComponent
+    v-if="$viewport.isGreaterThan('tablet')"
+    :navigation-data="headerMenu"
+  />
 
   <div v-else class="mobile-header">
     <NuxtLink aria-label="logo" to="/" class="mobile-logo">
@@ -54,8 +57,7 @@ const toggleMobileNav = () => {
 };
 
 const { data: configData } = await useAsyncData("config", async () => {
-  const storyblokApi = useStoryblokApi();
-  const { data } = await storyblokApi.get("cdn/stories/config", {
+  const { data } = await useStoryblokApi().get("cdn/stories/config", {
     resolve_links: "url",
     version:
       runtimeConfig.public.ENV === "development" ||
@@ -64,10 +66,10 @@ const { data: configData } = await useAsyncData("config", async () => {
         : "published",
   });
 
-  return data.story.content;
+  return data.story.content.header_menu;
 });
 
-headerMenu.value = configData.value.header_menu;
+headerMenu.value = configData.value;
 </script>
 
 <style scoped lang="scss">
