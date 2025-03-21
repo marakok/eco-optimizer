@@ -1,9 +1,10 @@
 <template>
   <header class="header">
-    <div class="container">
+    <div class="container header--container">
       <NuxtLink to="/" class="header--logo">
         <LogoComponent />
       </NuxtLink>
+
       <nav v-if="navItems">
         <ul class="header--menu-list">
           <li
@@ -12,11 +13,20 @@
             class="header--menu-list-item"
           >
             <NuxtLink
+              v-if="navItem.link.cached_url"
               :to="`/${navItem.link.cached_url}`"
               class="header--menu-list-item-link"
             >
               {{ navItem.link.story.name }}
             </NuxtLink>
+
+            <a
+              class="header--menu-list-item-link"
+              :href="`#${navItem.anchorLink}`"
+              v-if="navItem.anchorLink.length"
+            >
+              {{ navItem.anchorLink }}
+            </a>
           </li>
         </ul>
       </nav>
@@ -48,6 +58,12 @@ const navItems = computed(() => props.navigationData);
   z-index: 9;
   gap: var(--mvpb-spacing-6);
   background-color: var(--mvpb-color-light);
+}
+
+.header--container {
+  display: flex;
+  align-items: center;
+  gap: var(--mvpb-spacing-10);
 }
 
 .header--menu {
@@ -84,5 +100,6 @@ const navItems = computed(() => props.navigationData);
 .header--logo {
   text-decoration: none;
   margin-bottom: 0;
+  display: flex;
 }
 </style>

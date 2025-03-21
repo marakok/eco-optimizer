@@ -1,6 +1,7 @@
 <template>
   <section
     v-if="!blok.hide"
+    :id="blok.sectionTitle || null"
     v-editable="blok"
     class="section"
     :class="[sectionHeightClass, sectionClasses]"
@@ -8,6 +9,8 @@
     ref="sectionRef"
   >
     <ClientOnly>
+      <component :is="icon" class="section--icon" v-if="blok.sectionIcon" />
+
       <div
         class="section--background"
         :class="sectionBorderClass"
@@ -29,13 +32,15 @@
       :class="[containerSizeClass, contentPositionClass]"
     >
       <div class="section--content">
-        <p
+        <div
           v-if="blok.sectionTitle"
-          class="section--title"
+          class="section--content-title-container"
           :class="sectionTitlePositionClass"
         >
-          {{ blok.sectionTitle }}
-        </p>
+          <p class="section--title">
+            {{ blok.sectionTitle }}
+          </p>
+        </div>
         <StoryblokComponent
           v-for="nestedBlok in blok.body"
           :key="nestedBlok._uid"
@@ -47,7 +52,7 @@
 </template>
 
 <script setup>
-import { inView } from "motion";
+import * as Icon from "#/Icons";
 
 const props = defineProps({
   blok: {
@@ -58,6 +63,10 @@ const props = defineProps({
 
 const sectionRef = ref(null);
 const backgroundRef = ref(null);
+
+const icon = computed(() => {
+  if (props.blok.sectionIcon) return Icon[props.blok.sectionIcon];
+});
 
 const sectionStyles = computed(() => ({
   "--theme-font-color": props.blok.textColor || "var(--mvpb-color-dark)",
@@ -101,6 +110,8 @@ const sectionTitlePositionClass = computed(() => {
       return "section--title-center";
     case "right":
       return "section--title-right";
+    case "gridRight":
+      return "section--title-grid-right";
     default:
       return "section--title-left";
   }
@@ -209,18 +220,6 @@ const contentPositionClass = computed(() => {
       return "section--inner--bottom-right";
   }
 });
-
-onMounted(() => {
-  if (sectionRef.value) {
-    inView(
-      sectionRef.value,
-      () => {
-        // Your existing animation logic
-      },
-      { amount: 0.5 }
-    );
-  }
-});
 </script>
 
 <style scoped lang="scss">
@@ -243,11 +242,23 @@ onMounted(() => {
   }
 }
 
+.section--icon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 1;
+}
+
 .section--title {
   text-transform: uppercase;
   font-family: var(--mvpb-font-primary-semi-bold);
   color: var(--section-title-color);
   margin: var(--mvpb-spacing-6) 0 0 0;
+}
+
+.section--content-title-container {
+  margin-bottom: var(--mvpb-spacing-3);
 
   &.section--title-left {
     text-align: left;
@@ -256,9 +267,25 @@ onMounted(() => {
   &.section--title-center {
     text-align: center;
   }
+}
 
-  &.section--title-right {
-    text-align: right;
+@media (min-width: breakpoint(tablet)) {
+  .section--content-title-container {
+    margin-bottom: var(--mvpb-spacing-6);
+
+    &.section--title-right {
+      text-align: right;
+    }
+
+    &.section--title-grid-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      .section--title {
+        margin-left: var(--mvpb-spacing-6);
+        grid-column: 2;
+      }
+    }
   }
 }
 
