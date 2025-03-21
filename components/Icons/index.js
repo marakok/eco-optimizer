@@ -9,6 +9,7 @@ import OpenQuoteIcon from "./OpenQuoteIcon";
 import TreeIcon from "./TreeIcon";
 import StarIcon from "./StarIcon.vue";
 import FlowerIcon from "./FlowerIcon.vue";
+import SectionIconOne from "./SectionIconOne.vue";
 
 export {
   GraphIcon,
@@ -22,4 +23,5 @@ export {
   TreeIcon,
   StarIcon,
   FlowerIcon,
+  SectionIconOne,
 };
