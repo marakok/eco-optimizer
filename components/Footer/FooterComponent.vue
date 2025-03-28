@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <div class="footer--content container-wide">
+    <div class="footer--content container-large">
       <div class="footer--logo-wrapper">
         <NuxtLink aria-label="Logo" to="/">
           <LogoComponent class="footer--logo" />
@@ -17,7 +17,9 @@
           <strong>Contact</strong>
         </p>
         <small class="footer--text">
-          <p class="footer--link"><PhoneIcon />+31 6 20994203</p></small
+          <a class="footer--link" href="tel:+31 6 20994203"
+            ><PhoneIcon />+31 6 20994203</a
+          ></small
         >
         <small class="footer--text">
           <a href="mailto:info@ecooptimizer.co" class="footer--link"
@@ -39,8 +41,6 @@ const stories = ref({});
 onMounted(() => {
   stories.value = nuxtApp.$stories;
 });
-
-// test
 </script>
 
 <style scoped lang="scss">
@@ -52,7 +52,8 @@ onMounted(() => {
 }
 
 .footer--content {
-  padding: var(--mvpb-spacing-base-12) 0;
+  padding-top: var(--mvpb-spacing-base-12);
+  padding-bottom: var(--mvpb-spacing-base-12);
   display: flex;
   flex-direction: column;
   gap: var(--mvpb-spacing-base-4);
@@ -100,7 +101,7 @@ onMounted(() => {
 
 @media (min-width: breakpoint(tablet)) {
   .footer {
-    padding: 0 var(--mvpb-spacing-base-12);
+    padding: 0;
   }
 
   .footer--content {
