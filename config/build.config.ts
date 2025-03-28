@@ -4,7 +4,6 @@ type BuildConfig = Pick<NuxtConfig, "vite" | "css" | "devtools">;
 
 const config: BuildConfig = {
   vite: {
-    build: { rollupOptions: { output: { inlineDynamicImports: true } } },
     css: {
       preprocessorOptions: {
         scss: {

@@ -87,13 +87,13 @@ const navItems = computed(() => props.navigationData);
   transition: color 0.3s;
   text-transform: capitalize;
   text-decoration: none;
-  font-size: var(--mvpb-font-size-3);
+  font-size: var(--mvpb-font-size-4);
   font-family: var(--mvpb-font-primary-semi-bold);
   padding: 0;
   margin: 0;
   display: flex;
 
-  color: var(--mvpb-color-evening);
+  color: var(--mvpb-color-dark);
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -101,7 +101,7 @@ const navItems = computed(() => props.navigationData);
     to right,
     var(--mvpb-color-primary-dark),
     var(--mvpb-color-primary-dark) 50%,
-    var(--mvpb-color-evening) 50%
+    var(--mvpb-color-dark) 50%
   );
   background-size: 200% 100%;
   background-position: 100%;
