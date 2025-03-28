@@ -1,5 +1,5 @@
 :root {
-  --mvpb-nav-height: 100px;
+  --mvpb-nav-height: 110px;
   --mvpb-border-radius: 0.8rem;
   --theme-background-color: var(--mvpb-color-light, #ffffff);
   --page-screen-background: var(--mvpb-color-primary, #ffffff);
@@ -34,6 +34,15 @@ body {
   scrollbar-width: none;
 }
 
+.grecaptcha-badge {
+  display: none !important;
+}
+
 .container {
   position: relative;
+}
+
+.section:first-child {
+  padding-top: var(--mvpb-nav-height);
+  margin-top: calc(var(--mvpb-nav-height) / 2);
 }

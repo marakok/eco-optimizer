@@ -1,40 +1,59 @@
 <template>
-  <div v-editable="blok" :class="gridClasses">
+  <div v-editable="blok" :style="gridStyles" :class="gridClasses">
     <StoryblokComponent
-      v-for="item in blok.content"
-      :key="item._uid"
-      :blok="item"
+      v-if="blok.content?.length"
+      v-for="blok in blok.content"
+      :key="blok._uid"
+      :blok="blok"
     />
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
-  blok: {
-    type: Object,
-    required: true,
-  },
+const props = defineProps({ blok: Object });
+
+const gridClasses = computed(() => {
+  const layout = props.blok.layout || "full";
+
+  const isFlexLayout = [
+    "sixty-fourty",
+    "fourty-sixty",
+    "eighty-twenty",
+    "twenty-eighty",
+  ].includes(layout);
+
+  return {
+    grid: !isFlexLayout,
+    [`grid-${layout}`]: true,
+    "vertical-spacing": props.blok.verticalSpacing,
+    "reverse-mobile": props.blok.reverseMobile,
+    flex: isFlexLayout,
+  };
 });
 
-const gridClasses = computed(() => ({
-  grid: true,
-  [`grid-${props.blok.layout}`]: true,
-  "vertical-spacing": props.blok.verticalSpacing,
-  "vertical-align": props.blok.verticalAlign,
-  "reverse-mobile": props.blok.reverseMobile,
-  flex: props.blok.gridSixtyFourty || props.blok.layout === "half",
-  "grid-sixty-fourty": props.blok.gridSixtyFourty,
-  "grid-sixty-fourty-reverse":
-    props.blok.gridSixtyFourty && props.blok.reverseOrder,
+const gridStyles = computed(() => ({
+  "padding-top": props.blok.addPaddingTop ? `var(--mvpb-spacing-8)` : "0",
+  "padding-bottom": props.blok.addPaddingBottom ? `var(--mvpb-spacing-8)` : "0",
+  "column-gap": props.blok.gapHorizontal
+    ? `var(--mvpb-spacing-${props.blok.gapHorizontal})`
+    : "var(--mvpb-spacing-8)",
+  "row-gap": props.blok.gapVertical
+    ? `var(--mvpb-spacing-${props.blok.gapVertical})`
+    : "var(--mvpb-spacing-8)",
 }));
 </script>
 
 <style scoped lang="scss">
 @use "@/base/breakpoints.scss" as *;
 
+.animate-columns {
+  opacity: 0;
+  transform: translateY(10px);
+  will-change: opacity, transform, scale;
+}
+
 .grid {
   display: grid;
-  gap: var(--mvpb-spacing-2);
   width: 100%;
 
   &.vertical-spacing {
@@ -47,50 +66,42 @@ const gridClasses = computed(() => ({
   }
 }
 
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
 .grid-full {
   grid-template-columns: 1fr;
 }
 
 .grid-half {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--mvpb-spacing-2);
+  grid-template-columns: 1fr;
+  .grid & {
+    grid-template-columns: 1fr;
+  }
+}
 
-  & > div {
-    flex: 1 1 100%;
-    min-width: 300px;
+@media (min-width: breakpoint(tablet)) {
+  .grid-half {
+    grid-template-columns: repeat(2, 1fr);
+    .grid & {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
 .grid-thirds {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-
+  grid-template-columns: repeat(3, 1fr);
   .grid & {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .grid-quarters {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-
+  grid-template-columns: repeat(4, 1fr);
   .grid & {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
-  }
-}
-
-.flex {
-  display: flex;
-  flex-direction: column;
-  gap: var(--mvpb-spacing-2);
-}
-
-.grid-sixty-fourty-reverse {
-  & > div:first-child {
-    order: 1;
-  }
-
-  & > div:last-child {
-    order: 0;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -106,29 +117,41 @@ const gridClasses = computed(() => ({
     }
   }
 
-  .grid-half > div {
-    flex: 0 1 calc(50% - var(--mvpb-spacing-2) / 2);
-  }
-
+  // 60/40 layouts
   .grid-sixty-fourty {
     & > div:first-child {
       flex-basis: 60%;
     }
-
     & > div:last-child {
       flex-basis: 40%;
     }
   }
 
-  .grid-sixty-fourty-reverse {
-    justify-content: flex-end;
-
+  .grid-fourty-sixty {
     & > div:first-child {
-      order: 1;
+      flex-basis: 40%;
     }
-
     & > div:last-child {
-      order: 0;
+      flex-basis: 60%;
+    }
+  }
+
+  // 80/20 layouts
+  .grid-eighty-twenty {
+    & > div:first-child {
+      flex-basis: 80%;
+    }
+    & > div:last-child {
+      flex-basis: 20%;
+    }
+  }
+
+  .grid-twenty-eighty {
+    & > div:first-child {
+      flex-basis: 20%;
+    }
+    & > div:last-child {
+      flex-basis: 80%;
     }
   }
 }

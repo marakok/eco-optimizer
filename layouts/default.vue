@@ -107,8 +107,8 @@ headerMenu.value = configData.value;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-8)
-    var(--mvpb-spacing-base-4) var(--mvpb-spacing-8);
+  padding: var(--mvpb-spacing-base-4) var(--mvpb-spacing-2)
+    var(--mvpb-spacing-base-4) var(--mvpb-spacing-2);
   z-index: 10;
   background-color: var(--mvpb-color-light);
 }

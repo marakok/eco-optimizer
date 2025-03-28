@@ -1,7 +1,7 @@
 <template>
   <div v-editable="blok">
     <NuxtLink
-      v-if="blok.link?.cached_url"
+      v-if="blok.link?.cached_url && blok.variant !== 'quaternary'"
       :to="resolveLink"
       :target="blok.openInNewTab ? '_blank' : '_self'"
       class="storyblok-button"
@@ -14,6 +14,16 @@
         {{ blok.text }}
       </ButtonComponent>
     </NuxtLink>
+
+    <ButtonComponent
+      v-else
+      :variant="blok.variant || 'quaternary'"
+      :type="blok.type || 'button'"
+      :disabled="blok.disabled"
+      :url="blok.link.url"
+    >
+      {{ blok.text }}
+    </ButtonComponent>
   </div>
 </template>
 
