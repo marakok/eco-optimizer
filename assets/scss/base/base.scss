@@ -43,6 +43,5 @@ body {
 }
 
 .section:first-child {
-  padding-top: var(--mvpb-nav-height);
-  margin-top: calc(var(--mvpb-nav-height) / 2);
+  padding-top: calc(var(--mvpb-nav-height) * 1.6) !important;
 }

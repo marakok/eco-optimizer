@@ -16,6 +16,7 @@
       /></ClientOnly>
     </small>
   </button>
+
   <a v-else class="button" :href="url" :class="classes"><slot></slot></a>
 </template>
 
@@ -67,8 +68,9 @@ const classes = computed(() => ({
 }
 
 .button.secondary {
+  border-radius: var(--border-radius);
   font-family: var(--mvpb-font-primary-semi-bold);
-  background-color: var(--mvpb-color-secondary);
+  background-color: var(--mvpb-color-evening);
   color: var(--mvpb-color-light);
 }
 
@@ -78,10 +80,9 @@ const classes = computed(() => ({
 }
 
 .button.tertiary {
-  background: none;
-  border: 2px solid var(--mvpb-color-dark);
   border-radius: var(--border-radius);
   font-family: var(--mvpb-font-primary-semi-bold);
+  background-color: var(--mvpb-color-primary);
   color: var(--mvpb-color-dark);
 }
 
@@ -94,8 +95,7 @@ const classes = computed(() => ({
 .button.tertiary:hover:not(.disabled),
 .button.tertiary:focus:not(.disabled) {
   color: var(--mvpb-color-light);
-  background-color: var(--mvpb-color-dark);
-  border: 2px solid var(--mvpb-color-dark);
+  background-color: var(--mvpb-color-primary-dark);
 }
 
 .button.quaternary {
@@ -104,6 +104,7 @@ const classes = computed(() => ({
   font-family: var(--mvpb-font-primary-semi-bold);
   text-decoration: underline;
   color: var(--mvpb-color-evening);
+  min-height: 0px;
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -119,7 +120,7 @@ const classes = computed(() => ({
   &::after {
     content: "";
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left: 0;
     right: 0;
     z-index: 0;

@@ -3,7 +3,7 @@
 
   <PrimaryNavComponent
     v-if="$viewport.isGreaterThan('tablet')"
-    :navigation-data="headerMenu"
+    :navigation-data="navigationItems"
   />
 
   <div v-else class="mobile-header">
@@ -20,7 +20,7 @@
     </button>
   </div>
 
-  <MobileNavComponent ref="mobileNavRef" />
+  <MobileNavComponent ref="mobileNavRef" :navigation-data="navigationItems" />
 
   <Transition name="page" mode="out-in">
     <div :key="$route.fullPath">
@@ -37,7 +37,7 @@
 const router = useRouter();
 const runtimeConfig = useRuntimeConfig();
 const mobileNavRef = ref(null);
-const headerMenu = ref([]);
+const navigationItems = ref([]);
 
 const isDevelopment = runtimeConfig.public.ENV === "development";
 
@@ -69,7 +69,7 @@ const { data: configData } = await useAsyncData("config", async () => {
   return data.story.content.header_menu;
 });
 
-headerMenu.value = configData.value;
+navigationItems.value = configData.value;
 </script>
 
 <style scoped lang="scss">
