@@ -12,7 +12,7 @@
   bottom: 0;
   right: 0;
   margin: 0;
-  color: var(--mvpb-color-dark);
+  color: var(--mvpb-color-light);
   padding: var(--mvpb-spacing-base-2) var(--mvpb-spacing-base-6);
   z-index: 100000;
   text-transform: uppercase;

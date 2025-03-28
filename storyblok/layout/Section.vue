@@ -11,11 +11,7 @@
     <ClientOnly>
       <component :is="icon" class="section--icon" v-if="blok.sectionIcon" />
 
-      <div
-        class="section--background"
-        :class="sectionBorderClass"
-        :style="[backgroundStyles, borderStyles]"
-      >
+      <div class="section--background" :style="backgroundStyles">
         <div
           class="section--background-color"
           :class="backgroundPositionClass"
@@ -41,6 +37,7 @@
             {{ blok.sectionTitle }}
           </p>
         </div>
+
         <StoryblokComponent
           v-for="nestedBlok in blok.body"
           :key="nestedBlok._uid"
@@ -72,15 +69,6 @@ const sectionStyles = computed(() => ({
   "--theme-font-color": props.blok.textColor || "var(--mvpb-color-dark)",
   "--section-height": getSectionHeight(),
   "--theme-background-color": props.blok.backgroundColor || "transparent",
-  "--section-padding-x": props.blok.removeHorizontalPadding
-    ? "0"
-    : "var(--mvpb-spacing-3)",
-  "--section-padding-y": props.blok.removeVerticalPadding
-    ? "0"
-    : "var(--mvpb-spacing-3)",
-  "--section-margin-bottom": props.blok.removeVerticalSpacing
-    ? "0"
-    : "var(--mvpb-spacing-3)",
   "--section-title-color":
     props.blok.sectionTitleColor || "var(--theme-font-color)",
 }));
@@ -145,16 +133,6 @@ const sectionHeightClass = computed(() => {
       return "section--height-75";
   }
 });
-
-const sectionBorderClass = computed(() => ({
-  edgeless: props.blok.edgeless,
-  "has-border": props.blok.hasBorder,
-  "border-radius": props.blok.borderRadius,
-}));
-
-const borderStyles = computed(() => ({
-  "--border-color": props.blok.borderColor || "var(--theme-accent-color)",
-}));
 
 const getSectionHeight = () => {
   switch (props.blok.height) {
@@ -226,11 +204,13 @@ const contentPositionClass = computed(() => {
 @use "@/base/breakpoints.scss" as *;
 
 .section {
+  --section-padding-y: calc(var(--mvpb-spacing-16) * 1.6);
+  --section-padding-x: 0;
+
   position: relative;
   min-height: var(--section-height, 75vh);
   color: var(--theme-font-color);
-  margin-bottom: var(--section-margin-bottom);
-  padding: var(--mvpb-spacing-3) 0;
+  padding: var(--section-padding-y) var(--section-padding-x);
 
   &.edgeless {
     padding-left: 0;
@@ -291,11 +271,7 @@ const contentPositionClass = computed(() => {
 
 @media (min-width: breakpoint(tablet)) {
   .section {
-    padding: var(--section-padding-y) var(--section-padding-x);
-
-    &.has-background-color {
-      padding: var(--section-padding-y) var(--section-padding-x);
-    }
+    --section-padding-y: var(--mvpb-spacing-8);
   }
 }
 
@@ -303,14 +279,8 @@ const contentPositionClass = computed(() => {
   position: absolute;
   background-color: var(--theme-background-color);
 
-  &.has-border {
-    border: 2px solid var(--border-color, var(--theme-accent-color));
-  }
-
   &.edgeless {
     inset: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   &:not(&.edgeless) {
@@ -320,14 +290,8 @@ const contentPositionClass = computed(() => {
     left: var(--mvpb-spacing-3);
   }
 
-  &.border-radius {
-    border-radius: var(--mvpb-border-radius);
-  }
-
   &:not(&.edgeless) {
-    top: var(--section-padding-y);
     right: var(--section-padding-x);
-    bottom: var(--section-padding-y);
     left: var(--section-padding-x);
   }
 }

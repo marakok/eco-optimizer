@@ -1,40 +1,47 @@
 <template>
-  <Teleport to="body">
-    <div class="mobile-nav-wrapper" :class="{ 'is-open': isOpen }">
-      <div class="mobile-nav-overlay" @click="closeNav"></div>
-      <nav class="mobile-nav">
-        <div class="mobile-nav-header">
-          <NuxtLink to="/" @click="closeNav" class="mobile-nav-logo">
-            <LogoComponent />
-          </NuxtLink>
-        </div>
-        <ul class="mobile-nav-list" v-if="navItems?.length">
-          <li
-            v-for="navItem in navItems"
-            :key="navItem._uid"
-            class="mobile-nav-item"
+  <div class="mobile-nav-wrapper" :class="{ 'is-open': isOpen }">
+    <div class="mobile-nav-overlay" @click="closeNav"></div>
+    <nav class="mobile-nav">
+      <div class="mobile-nav-header">
+        <NuxtLink to="/" @click="closeNav" class="mobile-nav-logo">
+          <LogoComponent />
+        </NuxtLink>
+      </div>
+      <ul class="mobile-nav-list" v-if="navItems?.length">
+        <li
+          v-for="navItem in navItems"
+          :key="navItem._uid"
+          class="mobile-nav-item"
+        >
+          <NuxtLink
+            v-if="navItem.link.cached_url"
+            :to="`/${navItem.link.cached_url}`"
           >
-            <ul>
-              <li class="mobile-subnav-item">
-                <NuxtLink
-                  :to="`/${navItem.link.cached_url}`"
-                  class="mobile-subnav-link"
-                  @click="closeNav"
-                >
-                  {{ navItem.link.story.name }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <div class="mobile-nav-footer">
-          <NuxtLink to="/contact" class="mobile-subnav-link" @click="closeNav">
-            <ButtonComponent variant="primary">Contact us</ButtonComponent>
+            {{ navItem.link.story.name }}
           </NuxtLink>
-        </div>
-      </nav>
-    </div>
-  </Teleport>
+
+          <a
+            :href="`#${navItem.anchorLink}`"
+            v-if="navItem.anchorLink.length"
+            @click.prevent="scrollToSection(navItem.anchorLink)"
+          >
+            {{ navItem.anchorLink }}
+          </a>
+        </li>
+      </ul>
+      <div class="mobile-nav-footer">
+        <a
+          href="https://calendly.com/ecooptimizer/30min"
+          target="_blank"
+          class="footer--cta"
+        >
+          <ButtonComponent variant="tertiary">
+            Book appointment
+          </ButtonComponent>
+        </a>
+      </div>
+    </nav>
+  </div>
 </template>
 
 <script setup>
@@ -46,6 +53,7 @@ const props = defineProps({
 });
 
 const navItems = computed(() => props.navigationData);
+
 const isOpen = ref(false);
 const openCategory = ref(null);
 
@@ -62,6 +70,44 @@ const closeNav = () => {
 };
 
 defineExpose({ toggleNav });
+
+const isScrolled = ref(false);
+
+const handleScroll = () => {
+  if (typeof window !== "undefined") {
+    isScrolled.value = window.scrollY > 100;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
+const scrollToSection = (sectionId) => {
+  const section = document.getElementById(sectionId);
+
+  if (section) {
+    const header = document.querySelector(".mobile-header");
+    const headerHeight = isScrolled.value
+      ? header.offsetHeight
+      : header.offsetHeight * 0.7;
+
+    const sectionPosition = section.getBoundingClientRect().top;
+    const offsetPosition = sectionPosition + window.pageYOffset - headerHeight;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+
+    isOpen.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -81,15 +127,9 @@ defineExpose({ toggleNav });
   }
 }
 
-.mobile-subnav-link {
+.footer--cta {
+  margin: 0;
   text-decoration: none;
-  transition: color 0.3s;
-  color: var(--mvpb-color-dark);
-}
-
-.mobile-subnav-link:hover {
-  text-decoration: none;
-  color: var(--mvpb-color-tertiary);
 }
 
 .mobile-nav-overlay {
@@ -160,8 +200,9 @@ defineExpose({ toggleNav });
   overflow: hidden;
 }
 
-.mobile-subnav-item {
-  // padding: var(--mvpb-spacing-4);
+.mobile-nav-item {
+  text-transform: capitalize;
+  padding: 0 var(--mvpb-spacing-4);
 }
 
 .mobile-nav-footer {
