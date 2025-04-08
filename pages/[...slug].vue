@@ -20,6 +20,8 @@ const story = await useAsyncStoryblok(
 
 onMounted(() => {
   nextTick(() => {
+    anchorLinksManager.findAnchorLinks();
+
     window.scrollTo(0, 0);
     setLoading(false);
   });

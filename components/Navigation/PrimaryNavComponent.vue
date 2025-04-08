@@ -20,15 +20,6 @@
               >
                 {{ navItem.link.story.name }}
               </NuxtLink>
-
-              <a
-                class="header--menu-list-item-link"
-                :href="`#${navItem.anchorLink}`"
-                v-if="navItem.anchorLink.length"
-                @click.prevent="scrollToSection(navItem.anchorLink)"
-              >
-                {{ navItem.anchorLink }}
-              </a>
             </li>
           </ul>
         </nav>
@@ -43,10 +34,30 @@
       </a>
     </div>
 
-    <div class="header--sub-nav">
+    <div
+      class="header--sub-nav"
+      v-if="
+        anchorLinksManager.anchorLinks.value &&
+        anchorLinksManager.anchorLinks.value.length > 0
+      "
+    >
       <div class="header--container container-wide">
         <div class="header--inner">
-          <!-- Sub nav content goes here -->
+          <ul class="header--anchor-list">
+            <li
+              v-for="anchor in anchorLinksManager.anchorLinks.value"
+              :key="anchor.id"
+              class="header--anchor-list-item"
+            >
+              <a
+                :href="`#${anchor.id}`"
+                class="header--anchor-list-item-link"
+                @click.prevent="scrollToSection(anchor.id)"
+              >
+                {{ anchor.name }}
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -146,7 +157,7 @@ const scrollToSection = (sectionId) => {
 }
 
 .header--scrolled .header--logo {
-  transform: scale(0.85);
+  transform: scale(0.95);
 }
 
 .header--scrolled {
@@ -159,14 +170,16 @@ const scrollToSection = (sectionId) => {
   justify-content: space-between;
 }
 
-.header--menu-list {
+.header--menu-list,
+.header--anchor-list {
   display: flex;
   padding: 0;
   gap: var(--mvpb-spacing-base-5);
   margin: 0;
 }
 
-.header--menu-list-item {
+.header--menu-list-item,
+.header--anchor-list-item {
   margin: 0;
   list-style: none;
 }
@@ -195,9 +208,28 @@ const scrollToSection = (sectionId) => {
   background-position: 100%;
 }
 
-.header--menu-list-item-link:hover {
+.header--anchor-list-item-link {
+  transition: color 0.3s;
+  text-transform: capitalize;
+  text-decoration: none;
+  font-size: var(--mvpb-font-size-3);
+  font-family: var(--mvpb-font-primary-regular);
+  padding: 0;
+  margin: 0;
+  display: flex;
+  color: var(--mvpb-color-grey-40);
+}
+
+.header--menu-list-item-link:hover,
+.header--anchor-list-item-link:hover {
   transition: all 0.5s cubic-bezier(0, 0, 0.23, 1);
   background-position: 0%;
+  color: var(--mvpb-color-primary);
+}
+
+.header--anchor-list-item-link:hover {
+  color: var(--mvpb-color-primary-light);
+  text-decoration: none;
 }
 
 .header--logo {
