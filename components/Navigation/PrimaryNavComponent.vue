@@ -34,7 +34,7 @@
       </a>
     </div>
 
-    <div class="header--sub-nav" v-if="anchorLinks && anchorLinks.length > 0">
+    <div class="header--sub-nav">
       <div class="header--container container-wide">
         <div class="header--inner">
           <ul class="header--anchor-list">
@@ -72,6 +72,14 @@ const props = defineProps({
 
 const navItems = computed(() => props.navigationData);
 const isScrolled = ref(false);
+
+// Computed property to check if there are any anchor links
+const hasAnchorLinks = computed(() => {
+  return (
+    anchorLinksManager.anchorLinks.value &&
+    anchorLinksManager.anchorLinks.value.length > 0
+  );
+});
 
 const handleScroll = () => {
   if (typeof window !== "undefined") {

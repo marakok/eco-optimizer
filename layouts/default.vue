@@ -43,7 +43,7 @@ const navigationItems = ref([]);
 
 const isDevelopment = runtimeConfig.public.ENV === "development";
 
-const { setLoading } = usePageLoading();
+const { isLoading, setLoading } = usePageLoading();
 
 router.beforeEach((to, from, next) => {
   if (to.path !== from.path) {
@@ -73,19 +73,78 @@ const { data: configData } = await useAsyncData("config", async () => {
 
 navigationItems.value = configData.value;
 
+// Enable debug mode in development
+if (isDevelopment) {
+  anchorLinksManager.setDebugMode(true);
+}
+
+// Function to detect all anchor links (more reliable)
+const detectPageAnchors = () => {
+  // First try with data-navid attributes
+  anchorLinksManager.findAnchorLinks();
+
+  // Then also check for section IDs as fallback
+  anchorLinksManager.findSectionsByIds();
+
+  if (isDevelopment) {
+    console.log("Current anchor links:", anchorLinksManager.anchorLinks.value);
+  }
+};
+
+// Function to schedule anchor detection with multiple attempts
+const scheduleAnchorDetection = () => {
+  // Try immediately
+  detectPageAnchors();
+
+  // Try again after DOM updates (multiple times with increasing delays)
+  setTimeout(detectPageAnchors, 100);
+  setTimeout(detectPageAnchors, 500);
+  setTimeout(detectPageAnchors, 1000);
+
+  // One final check after all content should be loaded
+  setTimeout(detectPageAnchors, 2000);
+};
+
 // Listen for route changes to update anchor links
 router.afterEach(() => {
-  // Wait for the DOM to update after navigation
-  setTimeout(() => {
-    anchorLinksManager.findAnchorLinks();
-  }, 500);
+  // Reset anchor links when changing routes
+  anchorLinksManager.anchorLinks.value = [];
+
+  // Schedule detection after navigation
+  nextTick(() => {
+    scheduleAnchorDetection();
+  });
 });
 
-// Check for anchor links on initial page load
+// Watch for page loading state changes
+watch(
+  () => isLoading.value,
+  (newValue) => {
+    if (!newValue) {
+      // When page finishes loading, detect anchors
+      scheduleAnchorDetection();
+    }
+  }
+);
+
+// Force a check when component is mounted
 onMounted(() => {
+  // Initial detection with short delay to ensure DOM is ready
   setTimeout(() => {
-    anchorLinksManager.findAnchorLinks();
-  }, 500);
+    scheduleAnchorDetection();
+
+    // Force a manual update with test data if no links found after 2.5 seconds
+    // (debugging only, remove in production)
+    if (isDevelopment) {
+      setTimeout(() => {
+        if (!anchorLinksManager.anchorLinks.value.length) {
+          console.warn(
+            "No anchor links found after timeout, consider checking your markup"
+          );
+        }
+      }, 2500);
+    }
+  }, 10);
 });
 </script>
 

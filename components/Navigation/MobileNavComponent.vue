@@ -26,10 +26,7 @@
       </ul>
 
       <!-- Anchor Links (sections within current page) -->
-      <div
-        class="mobile-nav-section"
-        v-if="anchorLinksManager.anchorLinks.length > 0"
-      >
+      <div class="mobile-nav-section" v-if="hasAnchorLinks">
         <h3 class="mobile-nav-section-title">On This Page</h3>
         <ul class="mobile-nav-list">
           <li
@@ -73,6 +70,14 @@ const props = defineProps({
 });
 
 const navItems = computed(() => props.navigationData);
+
+// Computed property to check if there are any anchor links
+const hasAnchorLinks = computed(() => {
+  return (
+    anchorLinksManager.anchorLinks.value &&
+    anchorLinksManager.anchorLinks.value.length > 0
+  );
+});
 
 const isOpen = ref(false);
 const openCategory = ref(null);
