@@ -2,6 +2,7 @@
   <section
     v-if="!blok.hide"
     :id="blok.sectionTitle || null"
+    :data-navid="blok.sectionTitle || null"
     v-editable="blok"
     class="section"
     :class="[sectionHeightClass, sectionClasses]"
