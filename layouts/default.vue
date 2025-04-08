@@ -34,6 +34,8 @@
 </template>
 
 <script setup>
+import { anchorLinksManager } from "~/composables/useAnchorLinks";
+
 const router = useRouter();
 const runtimeConfig = useRuntimeConfig();
 const mobileNavRef = ref(null);
@@ -70,6 +72,21 @@ const { data: configData } = await useAsyncData("config", async () => {
 });
 
 navigationItems.value = configData.value;
+
+// Listen for route changes to update anchor links
+router.afterEach(() => {
+  // Wait for the DOM to update after navigation
+  setTimeout(() => {
+    anchorLinksManager.findAnchorLinks();
+  }, 500);
+});
+
+// Check for anchor links on initial page load
+onMounted(() => {
+  setTimeout(() => {
+    anchorLinksManager.findAnchorLinks();
+  }, 500);
+});
 </script>
 
 <style scoped lang="scss">

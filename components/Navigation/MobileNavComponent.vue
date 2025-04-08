@@ -7,6 +7,8 @@
           <LogoComponent />
         </NuxtLink>
       </div>
+
+      <!-- Main Navigation Items -->
       <ul class="mobile-nav-list" v-if="navItems?.length">
         <li
           v-for="navItem in navItems"
@@ -14,21 +16,37 @@
           class="mobile-nav-item"
         >
           <NuxtLink
-            v-if="navItem.link.cached_url"
+            v-if="navItem.link?.cached_url"
             :to="`/${navItem.link.cached_url}`"
+            @click="closeNav"
           >
             {{ navItem.link.story.name }}
           </NuxtLink>
-
-          <a
-            :href="`#${navItem.anchorLink}`"
-            v-if="navItem.anchorLink.length"
-            @click.prevent="scrollToSection(navItem.anchorLink)"
-          >
-            {{ navItem.anchorLink }}
-          </a>
         </li>
       </ul>
+
+      <!-- Anchor Links (sections within current page) -->
+      <div
+        class="mobile-nav-section"
+        v-if="anchorLinksManager.anchorLinks.length > 0"
+      >
+        <h3 class="mobile-nav-section-title">On This Page</h3>
+        <ul class="mobile-nav-list">
+          <li
+            v-for="anchor in anchorLinksManager.anchorLinks"
+            :key="anchor.id"
+            class="mobile-nav-item"
+          >
+            <a
+              :href="`#${anchor.id}`"
+              @click.prevent="scrollToSectionAndClose(anchor.id)"
+            >
+              {{ anchor.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
       <div class="mobile-nav-footer">
         <a
           href="https://calendly.com/ecooptimizer/30min"
@@ -45,6 +63,8 @@
 </template>
 
 <script setup>
+import { anchorLinksManager } from "~/composables/useAnchorLinks";
+
 const props = defineProps({
   navigationData: {
     type: Object,
@@ -88,25 +108,9 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-const scrollToSection = (sectionId) => {
-  const section = document.getElementById(sectionId);
-
-  if (section) {
-    const header = document.querySelector(".mobile-header");
-    const headerHeight = isScrolled.value
-      ? header.offsetHeight
-      : header.offsetHeight * 0.7;
-
-    const sectionPosition = section.getBoundingClientRect().top;
-    const offsetPosition = sectionPosition + window.pageYOffset - headerHeight;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-
-    isOpen.value = false;
-  }
+const scrollToSectionAndClose = (sectionId) => {
+  anchorLinksManager.scrollToSection(sectionId);
+  isOpen.value = false;
 };
 </script>
 
@@ -184,6 +188,18 @@ const scrollToSection = (sectionId) => {
   margin: 0;
 }
 
+.mobile-nav-section {
+  margin-top: var(--mvpb-spacing-4);
+  padding: var(--mvpb-spacing-2) var(--mvpb-spacing-4);
+  background-color: var(--mvpb-color-grey-60);
+}
+
+.mobile-nav-section-title {
+  font-size: var(--mvpb-font-size-3);
+  margin-bottom: var(--mvpb-spacing-2);
+  color: var(--mvpb-color-grey-900);
+}
+
 .toggle-icon {
   transition: transform 0.3s ease;
 
@@ -202,7 +218,18 @@ const scrollToSection = (sectionId) => {
 
 .mobile-nav-item {
   text-transform: capitalize;
-  padding: 0 var(--mvpb-spacing-4);
+  padding: var(--mvpb-spacing-2) 0;
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: var(--mvpb-color-dark);
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--mvpb-color-primary);
+    }
+  }
 }
 
 .mobile-nav-footer {
