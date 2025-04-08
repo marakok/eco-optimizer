@@ -1,6 +1,6 @@
 <template>
   <header class="header" :class="{ 'header--scrolled': isScrolled }">
-    <div class="header--container container-wide">
+    <div class="header--main-nav header--container container-wide">
       <div class="header--inner">
         <NuxtLink to="/" class="header--logo">
           <LogoComponent />
@@ -42,6 +42,14 @@
         <ButtonComponent variant="tertiary"> Book appointment </ButtonComponent>
       </a>
     </div>
+
+    <div class="header--sub-nav">
+      <div class="header--container container-wide">
+        <div class="header--inner">
+          <!-- Sub nav content goes here -->
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 
@@ -75,9 +83,7 @@ const scrollToSection = (sectionId) => {
   const section = document.getElementById(sectionId);
   if (section) {
     const header = document.querySelector(".header");
-    const headerHeight = isScrolled.value
-      ? header.offsetHeight
-      : header.offsetHeight * 0.7;
+    const headerHeight = header.offsetHeight;
 
     const sectionPosition = section.getBoundingClientRect().top;
     const offsetPosition = sectionPosition + window.pageYOffset - headerHeight;
@@ -98,14 +104,24 @@ const scrollToSection = (sectionId) => {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 9;
+  transition: all 0.3s ease;
   display: flex;
-  align-items: center;
-  min-height: var(--mvpb-nav-height);
+  flex-direction: column;
+}
+
+.header--main-nav {
   padding-top: var(--mvpb-spacing-base-5);
   padding-bottom: var(--mvpb-spacing-base-5);
-  z-index: 9;
   background-color: var(--mvpb-color-light);
-  transition: all 0.3s ease;
+  transition: padding 0.3s ease;
+}
+
+.header--sub-nav {
+  padding: var(--mvpb-spacing-base-3) 0;
+  background-color: var(--mvpb-color-grey-700);
+  width: 100%;
+  transition: padding 0.3s ease;
 }
 
 .header--inner {
@@ -119,25 +135,28 @@ const scrollToSection = (sectionId) => {
   text-decoration: none;
 }
 
-.header--scrolled {
-  min-height: calc(var(--mvpb-nav-height) * 0.7);
+/* Scrolled state styles */
+.header--scrolled .header--main-nav {
   padding-top: var(--mvpb-spacing-base-2);
   padding-bottom: var(--mvpb-spacing-base-2);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header--scrolled .header--sub-nav {
+  padding: var(--mvpb-spacing-base-2) 0;
 }
 
 .header--scrolled .header--logo {
-  transform: scale(0.85);
+  transform: scale(0.95);
+}
+
+.header--scrolled {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header--container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.header--menu {
-  background-color: var(--mvpb-color-light);
 }
 
 .header--menu-list {
@@ -186,5 +205,10 @@ const scrollToSection = (sectionId) => {
   margin-bottom: 0;
   display: flex;
   transition: transform 0.3s ease;
+}
+
+/* Set global CSS variable for scroll margin */
+:root {
+  --header-height: auto;
 }
 </style>
