@@ -14,12 +14,21 @@
               class="header--menu-list-item"
             >
               <NuxtLink
-                v-if="navItem.link?.cached_url"
+                v-if="navItem.link.cached_url"
                 :to="`/${navItem.link.cached_url}`"
                 class="header--menu-list-item-link"
               >
                 {{ navItem.link.story.name }}
               </NuxtLink>
+
+              <a
+                class="header--menu-list-item-link"
+                :href="`#${navItem.anchorLink}`"
+                v-if="navItem.anchorLink.length"
+                @click.prevent="scrollToSection(navItem.anchorLink)"
+              >
+                {{ navItem.anchorLink }}
+              </a>
             </li>
           </ul>
         </nav>
@@ -37,21 +46,7 @@
     <div class="header--sub-nav">
       <div class="header--container container-wide">
         <div class="header--inner">
-          <ul class="header--anchor-list">
-            <li
-              v-for="anchor in anchorLinks"
-              :key="anchor.id"
-              class="header--anchor-list-item"
-            >
-              <a
-                :href="`#${anchor.id}`"
-                class="header--anchor-list-item-link"
-                @click.prevent="scrollToSection(anchor.id)"
-              >
-                {{ anchor.name }}
-              </a>
-            </li>
-          </ul>
+          <!-- Sub nav content goes here -->
         </div>
       </div>
     </div>
@@ -64,22 +59,10 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-  anchorLinks: {
-    type: Array,
-    default: () => [],
-  },
 });
 
 const navItems = computed(() => props.navigationData);
 const isScrolled = ref(false);
-
-// Computed property to check if there are any anchor links
-const hasAnchorLinks = computed(() => {
-  return (
-    anchorLinksManager.anchorLinks.value &&
-    anchorLinksManager.anchorLinks.value.length > 0
-  );
-});
 
 const handleScroll = () => {
   if (typeof window !== "undefined") {
@@ -163,7 +146,7 @@ const scrollToSection = (sectionId) => {
 }
 
 .header--scrolled .header--logo {
-  transform: scale(0.95);
+  transform: scale(0.85);
 }
 
 .header--scrolled {
@@ -176,16 +159,14 @@ const scrollToSection = (sectionId) => {
   justify-content: space-between;
 }
 
-.header--menu-list,
-.header--anchor-list {
+.header--menu-list {
   display: flex;
   padding: 0;
   gap: var(--mvpb-spacing-base-5);
   margin: 0;
 }
 
-.header--menu-list-item,
-.header--anchor-list-item {
+.header--menu-list-item {
   margin: 0;
   list-style: none;
 }
@@ -214,28 +195,9 @@ const scrollToSection = (sectionId) => {
   background-position: 100%;
 }
 
-.header--anchor-list-item-link {
-  transition: color 0.3s;
-  text-transform: capitalize;
-  text-decoration: none;
-  font-size: var(--mvpb-font-size-3);
-  font-family: var(--mvpb-font-primary-regular);
-  padding: 0;
-  margin: 0;
-  display: flex;
-  color: var(--mvpb-color-grey-40);
-}
-
-.header--menu-list-item-link:hover,
-.header--anchor-list-item-link:hover {
+.header--menu-list-item-link:hover {
   transition: all 0.5s cubic-bezier(0, 0, 0.23, 1);
   background-position: 0%;
-  color: var(--mvpb-color-primary);
-}
-
-.header--anchor-list-item-link:hover {
-  color: var(--mvpb-color-primary-light);
-  text-decoration: none;
 }
 
 .header--logo {
