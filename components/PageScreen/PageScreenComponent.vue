@@ -2,7 +2,7 @@
   <Transition @enter="onEnter" @leave="onLeave">
     <div v-if="isVisible" class="page-screen" ref="pageScreenElement">
       <div class="heart-container">
-        <LogoIconSmall class="logo-icon" ref="logoIcon" />
+        <LogoComponent ref="logoIcon" />
       </div>
     </div>
   </Transition>
@@ -28,11 +28,11 @@ const onEnter = (el, done) => {
   });
 
   tl.to(logoIcon.value.$el, {
-    scale: 3.5,
+    scale: 1.8,
     duration: 1.2,
     ease: "power2.inOut",
   }).to(logoIcon.value.$el, {
-    scale: 0.1,
+    scale: 0.8,
     duration: 1.2,
     ease: "power2.inOut",
   });

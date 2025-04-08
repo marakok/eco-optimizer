@@ -19,16 +19,33 @@
           >
             {{ navItem.link.story.name }}
           </NuxtLink>
-
-          <a
-            :href="`#${navItem.anchorLink}`"
-            v-if="navItem.anchorLink.length"
-            @click.prevent="scrollToSection(navItem.anchorLink)"
-          >
-            {{ navItem.anchorLink }}
-          </a>
         </li>
       </ul>
+
+      <template
+        v-if="
+          anchorLinksManager.anchorLinks.value &&
+          anchorLinksManager.anchorLinks.value.length > 0
+        "
+      >
+        <p class="mobile-nav-list-header">On this page</p>
+        <ul class="mobile-nav-list">
+          <li
+            v-for="anchor in anchorLinksManager.anchorLinks.value"
+            :key="anchor.id"
+            class="mobile-nav-item"
+          >
+            <a
+              class="mobile-nav-list--subnav-link"
+              :href="`#${anchor.id}`"
+              @click.prevent="scrollToSection(anchor.id)"
+            >
+              {{ anchor.name }}
+            </a>
+          </li>
+        </ul>
+      </template>
+
       <div class="mobile-nav-footer">
         <a
           href="https://calendly.com/ecooptimizer/30min"
@@ -178,10 +195,22 @@ const scrollToSection = (sectionId) => {
   color: var(--mvpb-color-dark);
 }
 
+.mobile-nav-list-header {
+  font-size: var(--mvpb-font-size-4);
+  color: var(--mvpb-color-grey-700);
+  padding: var(--mvpb-spacing-4);
+  text-transform: uppercase;
+  margin: 0;
+}
+
 .mobile-nav-list {
   list-style: none;
   padding: 0;
   margin: 0;
+
+  &--subnav {
+    text-indent: var(--mvpb-spacing-4);
+  }
 }
 
 .toggle-icon {
@@ -208,5 +237,10 @@ const scrollToSection = (sectionId) => {
 .mobile-nav-footer {
   margin-top: auto;
   padding: var(--mvpb-spacing-4);
+}
+
+.mobile-nav-list--subnav-link {
+  display: block;
+  text-indent: var(--mvpb-spacing-2);
 }
 </style>
