@@ -111,6 +111,7 @@ const scrollToSection = (sectionId) => {
 @use "@/base/breakpoints.scss" as *;
 
 .header {
+  background-color: var(--mvpb-color-light);
   position: fixed;
   top: 0;
   left: 0;
@@ -124,7 +125,6 @@ const scrollToSection = (sectionId) => {
 .header--main-nav {
   padding-top: var(--mvpb-spacing-base-5);
   padding-bottom: var(--mvpb-spacing-base-5);
-  background-color: var(--mvpb-color-light);
   transition: padding 0.3s ease;
 }
 
