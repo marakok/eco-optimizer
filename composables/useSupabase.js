@@ -9,8 +9,15 @@ export const useSupabase = () => {
     const supabaseKey = config.public.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase environment variables');
+      console.error('Supabase configuration missing:', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey,
+        config: config.public
+      });
+      throw new Error('Missing Supabase environment variables. Please check your .env file.');
     }
+
+    console.log('Initializing Supabase client with URL:', supabaseUrl);
 
     supabaseClient = createClient(supabaseUrl, supabaseKey, {
       auth: {

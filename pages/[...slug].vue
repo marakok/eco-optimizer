@@ -1,5 +1,13 @@
 <template>
-  <div v-if="page">
+  <div v-if="error" class="error-container">
+    <h1>Connection Error</h1>
+    <p>Unable to connect to the database. Please check your Supabase configuration.</p>
+    <details style="margin-top: 1rem; text-align: left; max-width: 600px;">
+      <summary style="cursor: pointer; font-weight: bold;">Technical Details</summary>
+      <pre style="margin-top: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px; overflow-x: auto;">{{ error }}</pre>
+    </details>
+  </div>
+  <div v-else-if="page">
     <component
       :is="getSectionComponent(section.type)"
       v-for="section in page.sections"
@@ -11,6 +19,9 @@
     <h1>Page Not Found</h1>
     <p>The page you're looking for doesn't exist.</p>
     <NuxtLink to="/">Go to Homepage</NuxtLink>
+  </div>
+  <div v-else-if="pending" class="loading-container">
+    <p>Loading...</p>
   </div>
 </template>
 
@@ -24,9 +35,17 @@ const slug = computed(() => {
   return params && params.length > 0 ? params.join('/') : 'home';
 });
 
-const { data: page, pending } = await useAsyncData(
+const { data: page, pending, error } = await useAsyncData(
   `page-${slug.value}`,
-  () => fetchPageBySlug(slug.value)
+  async () => {
+    try {
+      const result = await fetchPageBySlug(slug.value);
+      return result;
+    } catch (err) {
+      console.error('Error loading page:', err);
+      throw err;
+    }
+  }
 );
 
 if (page.value) {
@@ -100,5 +119,15 @@ onMounted(() => {
   text-decoration: none;
   color: var(--mvpb-color-primary);
   font-size: var(--mvpb-font-size-4);
+}
+
+.loading-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--mvpb-spacing-8);
+  font-size: var(--mvpb-font-size-5);
 }
 </style>
