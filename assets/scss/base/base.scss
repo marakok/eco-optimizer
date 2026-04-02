@@ -24,6 +24,14 @@ html {
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   transition: background-color 0.3s ease;
   background-color: var(--mvpb-color-light);

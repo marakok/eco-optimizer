@@ -1,6 +1,6 @@
 <template>
   <section
-    :id="section.title || null"
+    :id="getSectionId()"
     :data-navid="section.title || null"
     class="section"
     :class="[sectionHeightClass, sectionClasses]"
@@ -169,6 +169,17 @@ const contentPositionClass = computed(() => {
       return "section--inner--bottom-right";
   }
 });
+
+const getSectionId = () => {
+  const sectionTypeMap = {
+    features: 'features',
+    team: 'team',
+    faq: 'faq',
+    contact: 'contact',
+  };
+
+  return sectionTypeMap[props.section.type] || props.section.title || null;
+};
 </script>
 
 <style scoped lang="scss">

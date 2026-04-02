@@ -1,10 +1,28 @@
 <template>
+  <a
+    v-if="href || variant === 'quaternary'"
+    :href="href || url"
+    class="button"
+    :class="classes"
+  >
+    <small v-if="variant !== 'quaternary'" class="button--content">
+      <slot></slot>
+      <ClientOnly>
+        <Icon
+          v-if="variant === 'primary'"
+          name="uil:arrow-right"
+          class="button--icon"
+      /></ClientOnly>
+    </small>
+    <slot v-else></slot>
+  </a>
+
   <button
+    v-else
     class="button"
     :type="type"
     :disabled="disabled"
     :class="classes"
-    v-if="variant !== 'quaternary'"
   >
     <small class="button--content">
       <slot></slot>
@@ -16,8 +34,6 @@
       /></ClientOnly>
     </small>
   </button>
-
-  <a v-else class="button" :href="url" :class="classes"><slot></slot></a>
 </template>
 
 <script setup>
@@ -26,6 +42,7 @@ const props = defineProps({
   type: { default: "button", type: String },
   disabled: { default: false, type: Boolean },
   url: { default: "", type: String },
+  href: { default: "", type: String },
 });
 
 const VALID_VARIANTS = ["primary", "secondary", "tertiary", "quaternary"];

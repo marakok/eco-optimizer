@@ -51,6 +51,16 @@ const getSectionComponent = (type) => {
       return resolveComponent('TestimonialsSection');
     case 'contact':
       return resolveComponent('ContactSection');
+    case 'features':
+      return resolveComponent('FeaturesSection');
+    case 'midhero':
+      return resolveComponent('MidHeroSection');
+    case 'team':
+      return resolveComponent('TeamMemberSection');
+    case 'faq':
+      return resolveComponent('FaqSection');
+    case 'cta':
+      return resolveComponent('CtaSection');
     default:
       return resolveComponent('SectionComponent');
   }
