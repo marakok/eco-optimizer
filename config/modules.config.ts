@@ -10,13 +10,6 @@ const config: ModulesConfig = {
     "@nuxtjs/device",
     "nuxt-viewport",
     "vue3-carousel-nuxt",
-    [
-      "@storyblok/nuxt",
-      {
-        accessToken: process.env.STORYBLOK_KEY,
-        apiOptions: { region: "" },
-      },
-    ],
   ],
   icon: {
     serverBundle: {

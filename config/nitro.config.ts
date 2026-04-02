@@ -1,5 +1,5 @@
 import type { NuxtConfig } from "@nuxt/schema";
-import StoryblokClient from "storyblok-js-client";
+import { createClient } from '@supabase/supabase-js';
 import generateSitemapXml from "../server/utils/generateSitemapXml";
 
 type NitroConfig = NonNullable<NuxtConfig["nitro"]>;
@@ -8,18 +8,27 @@ const config: NitroConfig = {
   preset: "netlify",
   hooks: {
     close: async () => {
-      const baseUrl = process.env.BASE_URL;
+      const baseUrl = process.env.BASE_URL || 'https://ecooptimizer.com';
 
-      const sbInstance = new StoryblokClient({
-        accessToken: process.env.STORYBLOK_KEY,
-      });
+      try {
+        const supabase = createClient(
+          process.env.VITE_SUPABASE_URL || '',
+          process.env.VITE_SUPABASE_ANON_KEY || ''
+        );
 
-      const { data } = await sbInstance.get("cdn/links", {
-        version: "published",
-        per_page: 1000,
-      });
+        const { data: pages, error } = await supabase
+          .from('pages')
+          .select('slug, updated_at')
+          .eq('published', true);
 
-      generateSitemapXml(data, baseUrl);
+        if (!error && pages) {
+          generateSitemapXml(pages, baseUrl);
+        } else {
+          console.warn('Failed to generate sitemap:', error);
+        }
+      } catch (error) {
+        console.warn('Sitemap generation skipped:', error);
+      }
     },
   },
 };

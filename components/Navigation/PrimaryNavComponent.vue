@@ -6,19 +6,18 @@
           <LogoComponent />
         </NuxtLink>
 
-        <nav v-if="navItems">
+        <nav v-if="navItems && navItems.length > 0">
           <ul class="header--menu-list">
             <li
               v-for="navItem in navItems"
-              :key="navItem._uid"
+              :key="navItem.id"
               class="header--menu-list-item"
             >
               <NuxtLink
-                v-if="navItem.link.cached_url"
-                :to="`/${navItem.link.cached_url}`"
+                :to="navItem.url"
                 class="header--menu-list-item-link"
               >
-                {{ navItem.link.story.name }}
+                {{ navItem.label }}
               </NuxtLink>
             </li>
           </ul>

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
+    "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -18,8 +18,8 @@
     "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.18.7",
     "@nuxtjs/robots": "^5.1.1",
+    "@supabase/supabase-js": "^2.39.7",
     "@types/nodemailer": "^6.4.16",
-    "emailjs": "^4.0.3",
     "gsap": "^3.12.5",
     "motion": "^10.18.0",
     "nodemailer": "^6.9.15",
@@ -34,11 +34,10 @@
   "devDependencies": {
     "@nuxtjs/device": "^3.1.1",
     "@nuxtjs/style-resources": "^1.2.2",
-    "@storyblok/nuxt": "^6.0.4",
     "@types/node": "^20.12.8",
     "sass": "^1.75.0"
   },
-  "engines": {
-    "node": "18.20.4"
+  "overrides": {
+    "emailjs": "4.0.3"
   }
 }

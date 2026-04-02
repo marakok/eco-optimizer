@@ -9,6 +9,8 @@ interface RuntimeConfig {
   public: {
     ENV?: string;
     RECAPTCHA_SITE_KEY?: string;
+    VITE_SUPABASE_URL?: string;
+    VITE_SUPABASE_ANON_KEY?: string;
   };
 }
 
@@ -22,6 +24,8 @@ const config: NuxtConfig["runtimeConfig"] & RuntimeConfig = {
   public: {
     ENV: process.env.ENV,
     RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
+    VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL,
+    VITE_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY,
   },
 };
 

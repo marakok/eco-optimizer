@@ -57,19 +57,11 @@ const toggleMobileNav = () => {
 };
 
 const { data: configData } = await useAsyncData("config", async () => {
-  const { data } = await useStoryblokApi().get("cdn/stories/config", {
-    resolve_links: "url",
-    version:
-      runtimeConfig.public.ENV === "development" ||
-      runtimeConfig.public.ENV === "staging"
-        ? "draft"
-        : "published",
-  });
-
-  return data.story.content.header_menu;
+  const { fetchNavigation } = useNavigation();
+  return await fetchNavigation();
 });
 
-navigationItems.value = configData.value;
+navigationItems.value = configData.value || [];
 </script>
 
 <style scoped lang="scss">

@@ -10,14 +10,14 @@
       <ul class="mobile-nav-list" v-if="navItems?.length">
         <li
           v-for="navItem in navItems"
-          :key="navItem._uid"
+          :key="navItem.id"
           class="mobile-nav-item"
         >
           <NuxtLink
-            v-if="navItem.link.cached_url"
-            :to="`/${navItem.link.cached_url}`"
+            :to="navItem.url"
+            @click="closeNav"
           >
-            {{ navItem.link.story.name }}
+            {{ navItem.label }}
           </NuxtLink>
         </li>
       </ul>

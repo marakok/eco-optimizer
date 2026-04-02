@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { createClient } from '@supabase/supabase-js';
 import {
   getContactEmailTemplate,
   getAutoReplyTemplate,
@@ -108,6 +109,26 @@ export default defineEventHandler(async (event) => {
       pageUri: body.pageUri || "",
     };
 
+    // Save to Supabase
+    const supabase = createClient(
+      process.env.VITE_SUPABASE_URL,
+      process.env.VITE_SUPABASE_ANON_KEY
+    );
+
+    const { error: dbError } = await supabase
+      .from('form_submissions')
+      .insert({
+        name: submissionData.name,
+        email: submissionData.email,
+        message: submissionData.message,
+        page_uri: submissionData.pageUri,
+        ip_address: event.node.req.headers['x-forwarded-for'] || event.node.req.socket.remoteAddress,
+      });
+
+    if (dbError) {
+      console.error('Error saving to database:', dbError);
+    }
+
     // Send email notifications
     try {
       // Email to admin - IMPORTANT: Use the same authenticated email address for "from" field
@@ -148,6 +169,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return {
+      success: true,
       message: "Submission successful",
     };
   } catch (error) {
