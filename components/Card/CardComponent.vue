@@ -1,23 +1,22 @@
 <template>
   <div
     ref="cardRef"
-    v-editable="blok"
     class="card"
     :class="{
       'card--clickable': isClickable,
-      'card--landscape': blok.isLandscape,
-      'card--reversed': blok.isLandscape && blok.reverseOrder,
+      'card--landscape': isLandscape,
+      'card--reversed': isLandscape && reverseOrder,
     }"
   >
     <div class="card--inner" :style="cardInnerStyles">
       <div
-        v-if="blok.image?.filename"
+        v-if="image"
         class="card--image-container"
         :class="{ 'image-only': isImageOnly }"
       >
         <img
-          :src="blok.image.filename"
-          aria-label="Card image"
+          :src="image"
+          :alt="imageAlt || 'Card image'"
           class="card--image"
           loading="lazy"
         />
@@ -25,16 +24,17 @@
       <div
         class="card--content"
         :style="cardContentStyles"
-        v-if="blok.text && renderedText.length"
+        v-if="text || $slots.default"
       >
-        <div class="card--text" v-html="renderedText"></div>
+        <div class="card--text" v-if="text" v-html="text"></div>
+        <slot v-else />
 
         <ButtonComponent
-          v-if="isClickable"
+          v-if="isClickable && ctaText"
           class="card--cta"
           type="button"
-          :variant="props.blok.ctaVariant || 'primary'"
-          >{{ blok.ctaText }}</ButtonComponent
+          :variant="ctaVariant || 'primary'"
+          >{{ ctaText }}</ButtonComponent
         >
       </div>
     </div>
@@ -43,13 +43,45 @@
 
 <script setup>
 const props = defineProps({
-  blok: {
-    type: Object,
-    required: true,
+  image: {
+    type: String,
+    default: null,
+  },
+  imageAlt: {
+    type: String,
+    default: '',
+  },
+  text: {
+    type: String,
+    default: null,
+  },
+  backgroundColor: {
+    type: String,
+    default: 'var(--mvpb-color-light)',
+  },
+  fontColor: {
+    type: String,
+    default: null,
   },
   isClickable: {
     type: Boolean,
-    required: false,
+    default: false,
+  },
+  isLandscape: {
+    type: Boolean,
+    default: false,
+  },
+  reverseOrder: {
+    type: Boolean,
+    default: false,
+  },
+  ctaText: {
+    type: String,
+    default: null,
+  },
+  ctaVariant: {
+    type: String,
+    default: 'primary',
   },
 });
 
@@ -57,9 +89,8 @@ const cardRef = ref(null);
 const hasColumnParent = ref(false);
 
 const cardInnerStyles = computed(() => ({
-  "--card-background-color":
-    props.blok.backgroundColor || "var(--mvpb-color-light)",
-  "--card-font-color": props.blok.fontColor,
+  "--card-background-color": props.backgroundColor,
+  "--card-font-color": props.fontColor,
 }));
 
 const cardContentStyles = computed(() => ({
@@ -68,15 +99,8 @@ const cardContentStyles = computed(() => ({
     : "0",
 }));
 
-const renderedText = computed(() => {
-  return props.blok.text ? renderRichText(props.blok.text) : "";
-});
-
 const isImageOnly = computed(() => {
-  return (
-    props.blok.image?.filename &&
-    (!props.blok.text || !renderedText.value.length)
-  );
+  return props.image && !props.text && !props.$slots.default;
 });
 
 onMounted(() => {

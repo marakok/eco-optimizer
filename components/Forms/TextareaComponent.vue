@@ -1,13 +1,13 @@
 <template>
   <div class="form-element">
-    <label v-if="label || blok?.title" :for="name || blok?.id" class="form-element--label">
-      {{ label || blok?.title }}
+    <label v-if="label" :for="name" class="form-element--label">
+      {{ label }}
     </label>
     <textarea
       class="textarea-component"
-      :id="name || blok?.id"
+      :id="name"
       :name="name"
-      :placeholder="placeholder || blok?.placeholder"
+      :placeholder="placeholder"
       :required="required"
       :value="modelValue"
       :class="{ 'invalid-input': error || (!isValid && isSubmitted) }"
@@ -21,10 +21,6 @@
 
 <script setup>
 const props = defineProps({
-  blok: {
-    type: Object,
-    default: null,
-  },
   modelValue: String,
   label: String,
   name: String,

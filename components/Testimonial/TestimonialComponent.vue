@@ -8,60 +8,47 @@
     <div class="testimonial--inner">
       <div v-if="isOdd" class="testimonial--author-container">
         <div
-          v-if="blok.authorImage?.filename"
+          v-if="authorImage"
           class="testimonial--author-image"
         >
           <img
-            :src="blok.authorImage.filename"
-            :alt="blok.authorName || 'Testimonial author'"
+            :src="authorImage"
+            :alt="authorName || 'Testimonial author'"
             loading="lazy"
           />
         </div>
         <div class="testimonial--author-info">
-          <p class="testimonial--author-name">{{ blok.authorName }}</p>
-          <p class="testimonial--author-title">{{ blok.authorTitle }}</p>
+          <p class="testimonial--author-name">{{ authorName }}</p>
+          <p class="testimonial--author-title">{{ authorTitle }}</p>
         </div>
       </div>
 
       <div class="testimonial--content-wrapper">
         <div class="testimonial--quote-icon">
           <OpenQuoteIcon
-            :color="blok.quoteIconColor || 'var(--mvpb-color-quaternary)'"
+            :color="quoteIconColor || 'var(--mvpb-color-quaternary)'"
           />
         </div>
-        <ClientOnly>
-          <div class="testimonial--content">
-            <!-- Use StoryblokComponent for rendering all content types -->
-            <StoryblokComponent
-              v-for="contentBlok in blok.content"
-              :key="contentBlok._uid"
-              :blok="contentBlok"
-            />
-
-            <!-- Fallback to legacy text field if no content components -->
-            <p
-              v-if="!hasContentComponents"
-              class="testimonial--text"
-              v-html="legacyContent"
-            ></p>
-          </div>
-        </ClientOnly>
+        <div class="testimonial--content">
+          <p class="testimonial--text" v-if="content">{{ content }}</p>
+          <slot v-else />
+        </div>
       </div>
 
       <div v-if="!isOdd" class="testimonial--author-container">
         <div
-          v-if="blok.authorImage?.filename"
+          v-if="authorImage"
           class="testimonial--author-image"
         >
           <img
-            :src="blok.authorImage.filename"
-            :alt="blok.authorName || 'Testimonial author'"
+            :src="authorImage"
+            :alt="authorName || 'Testimonial author'"
             loading="lazy"
           />
         </div>
         <div class="testimonial--author-info">
-          <p class="testimonial--author-name">{{ blok.authorName }}</p>
-          <p class="testimonial--author-title">{{ blok.authorTitle }}</p>
+          <p class="testimonial--author-name">{{ authorName }}</p>
+          <p class="testimonial--author-title">{{ authorTitle }}</p>
         </div>
       </div>
     </div>
@@ -72,9 +59,41 @@
 import OpenQuoteIcon from "../Icons/OpenQuoteIcon.vue";
 
 const props = defineProps({
-  blok: {
-    type: Object,
-    required: true,
+  authorImage: {
+    type: String,
+    default: null,
+  },
+  authorName: {
+    type: String,
+    default: '',
+  },
+  authorTitle: {
+    type: String,
+    default: '',
+  },
+  content: {
+    type: String,
+    default: null,
+  },
+  backgroundColor: {
+    type: String,
+    default: '#1A1B23',
+  },
+  textColor: {
+    type: String,
+    default: '#ffffff',
+  },
+  authorNameColor: {
+    type: String,
+    default: '#ffffff',
+  },
+  authorTitleColor: {
+    type: String,
+    default: '#9ca3af',
+  },
+  quoteIconColor: {
+    type: String,
+    default: 'var(--mvpb-color-quaternary)',
   },
   index: {
     type: Number,
@@ -91,22 +110,11 @@ const layoutClass = computed(() => ({
 }));
 
 const testimonialStyles = computed(() => ({
-  "--testimonial-background-color": props.blok.backgroundColor || "#1A1B23",
-  "--testimonial-text-color": props.blok.textColor || "#ffffff",
-  "--testimonial-author-name-color": props.blok.authorNameColor || "#ffffff",
-  "--testimonial-author-title-color": props.blok.authorTitleColor || "#9ca3af",
+  "--testimonial-background-color": props.backgroundColor,
+  "--testimonial-text-color": props.textColor,
+  "--testimonial-author-name-color": props.authorNameColor,
+  "--testimonial-author-title-color": props.authorTitleColor,
 }));
-
-const hasContentComponents = computed(() => {
-  return Array.isArray(props.blok.content) && props.blok.content.length > 0;
-});
-
-const legacyContent = computed(() => {
-  if (props.blok.content?.type === "doc") {
-    return renderRichText(props.blok.content);
-  }
-  return props.blok.text || "";
-});
 </script>
 
 <style scoped lang="scss">
