@@ -12,7 +12,18 @@
         :key="index"
         class="testimonial-slide"
       >
-        <TestimonialComponent :blok="testimonial" :index="index" />
+        <TestimonialComponent
+          :authorImage="testimonial.authorImage"
+          :authorName="testimonial.authorName"
+          :authorTitle="testimonial.authorTitle"
+          :content="testimonial.content"
+          :backgroundColor="testimonial.backgroundColor"
+          :textColor="testimonial.textColor"
+          :authorNameColor="testimonial.authorNameColor"
+          :authorTitleColor="testimonial.authorTitleColor"
+          :quoteIconColor="testimonial.quoteIconColor"
+          :index="index"
+        />
       </Slide>
 
       <template #addons>
