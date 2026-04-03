@@ -1,26 +1,28 @@
 <template>
   <ScrollProgressComponent />
 
-  <PrimaryNavComponent
-    v-if="$viewport.isGreaterThan('tablet')"
-    :navigation-data="navigationItems"
-  />
+  <ClientOnly>
+    <PrimaryNavComponent
+      v-if="$viewport.isGreaterThan('tablet')"
+      :navigation-data="navigationItems"
+    />
 
-  <div v-else class="mobile-header">
-    <NuxtLink aria-label="logo" to="/" class="mobile-logo">
-      <LogoComponent />
-    </NuxtLink>
+    <div v-else class="mobile-header">
+      <NuxtLink aria-label="logo" to="/" class="mobile-logo">
+        <LogoComponent />
+      </NuxtLink>
 
-    <button
-      @click="toggleMobileNav"
-      aria-label="Menu Button"
-      class="mobile-menu-button"
-    >
-      <Icon name="uil:align-justify" class="mobile-menu-icon" />
-    </button>
-  </div>
+      <button
+        @click="toggleMobileNav"
+        aria-label="Menu Button"
+        class="mobile-menu-button"
+      >
+        <Icon name="uil:align-justify" class="mobile-menu-icon" />
+      </button>
+    </div>
 
-  <MobileNavComponent ref="mobileNavRef" :navigation-data="navigationItems" />
+    <MobileNavComponent ref="mobileNavRef" :navigation-data="navigationItems" />
+  </ClientOnly>
 
   <Transition name="page" mode="out-in">
     <div :key="$route.fullPath">
