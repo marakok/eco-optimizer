@@ -1,23 +1,41 @@
 <template>
   <div class="form-element">
-    <label :for="blok.id" class="form-element--label">{{ blok.title }}</label>
+    <label v-if="label || blok?.title" :for="name || blok?.id" class="form-element--label">
+      {{ label || blok?.title }}
+    </label>
     <input
       class="input-component"
-      v-bind="$props"
-      :placeholder="blok.placeholder"
-      :class="{ 'invalid-input': !isValid && isSubmitted }"
+      :id="name || blok?.id"
+      :name="name"
+      :type="type"
+      :placeholder="placeholder || blok?.placeholder"
+      :required="required"
+      :value="modelValue"
+      :class="{ 'invalid-input': error || (!isValid && isSubmitted) }"
       @input="$emit('update:modelValue', $event.target.value)"
     />
-    <small v-if="!isValid && isSubmitted" class="error-message">
-      {{ errorMessage }}
+    <small v-if="error || (!isValid && isSubmitted)" class="error-message">
+      {{ error || errorMessage }}
     </small>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  blok: Object,
+  blok: {
+    type: Object,
+    default: null,
+  },
   modelValue: String,
+  label: String,
+  name: String,
+  type: {
+    type: String,
+    default: 'text',
+  },
+  placeholder: String,
+  required: Boolean,
+  error: String,
   isValid: {
     type: Boolean,
     default: true,
